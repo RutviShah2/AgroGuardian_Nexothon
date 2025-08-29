@@ -1,0 +1,765 @@
+import React, { useState, useRef } from 'react';
+import { 
+  Camera, 
+  MessageCircle, 
+  Leaf, 
+  Users, 
+  Phone, 
+  Mail, 
+  MapPin, 
+  Upload, 
+  Send, 
+  Bot, 
+  User,
+  Shield,
+  Award,
+  TrendingUp,
+  ChevronRight,
+  Heart,
+  Star,
+  Stethoscope,
+  Package
+} from 'lucide-react';
+
+const AgroGuardianAI = () => {
+  const [language, setLanguage] = useState('english');
+  const [capturedImage, setCapturedImage] = useState<string | null>(null);
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [chatMessages, setChatMessages] = useState<Array<{type: 'user' | 'bot', content: string}>>([]);
+  const [userMessage, setUserMessage] = useState('');
+  const [isCameraActive, setIsCameraActive] = useState(false);
+  const [currentStep, setCurrentStep] = useState(0);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  const getText = (key: string) => {
+    const texts: Record<string, Record<string, string>> = {
+      english: {
+        title: 'AgroGuardian AI',
+        subtitle: 'Nurturing Tomorrow\'s Harvest',
+        description: 'Empowering farmers with cutting-edge AI technology to detect crop diseases, optimize soil health, and build sustainable agricultural practices for a better tomorrow.',
+        homeNav: 'Home',
+        aboutNav: 'About Us',
+        contactNav: 'Contact',
+        schemesNav: 'Government Schemes',
+        vendorsNav: 'Medicine Vendors',
+        howToTitle: 'How to Use - Simple Steps for Farmers',
+        step1Title: '1. Select Your Language',
+        step1Desc: 'Choose your preferred language from the top menu - English, Hindi, or Gujarati for easy understanding',
+        step2Title: '2. Take or Upload Crop Photo',
+        step2Desc: 'Click the camera button to take a photo of your crop or upload from your phone gallery',
+        step3Title: '3. Get AI Analysis',
+        step3Desc: 'Our AI will analyze your crop image and identify any diseases or problems within seconds',
+        step4Title: '4. Chat for More Help',
+        step4Desc: 'Ask any farming questions to our AI assistant and get instant solutions and advice',
+        analysisTitle: 'AI Crop Analysis & Expert Chat',
+        imageSection: 'Capture or Upload Your Crop Image',
+        chatSection: 'AI Farming Assistant',
+        captureBtn: 'Take Photo',
+        uploadBtn: 'Upload Image',
+        analyzing: 'Analyzing your crop...',
+        placeholder: 'Ask me about your crops, diseases, or farming techniques...',
+        greeting: 'Hello! I am your AI farming assistant.',
+        subGreeting: 'Upload a crop image or ask me any farming questions!',
+        aboutTitle: 'About AgroGuardian AI',
+        contactTitle: 'Get In Touch With Us',
+        schemesTitle: 'Government Schemes for Farmers',
+        vendorsTitle: 'Trusted Medicine Vendors',
+        footerDesc: 'Empowering farmers with intelligent agricultural solutions',
+        footerCopy: '© 2025 AgroGuardian AI. Made with ❤️ for farmers.',
+        cropLossReduction: 'Crop Loss Reduction',
+        chemicalReduction: 'Chemical Use Reduction', 
+        incomeIncrease: 'Income Increase',
+        nextStep: 'Next Step',
+        prevStep: 'Previous Step'
+      },
+      hindi: {
+        title: 'एग्रोगार्डियन एआई',
+        subtitle: 'कल की फसल का पोषण',
+        description: 'किसानों को अत्याधुनिक AI तकनीक से सशक्त बनाना, फसल रोगों की पहचान करना, मिट्टी के स्वास्थ्य को बेहतर बनाना और बेहतर कल के लिए टिकाऊ कृषि प्रथाओं का निर्माण करना।',
+        homeNav: 'होम',
+        aboutNav: 'हमारे बारे में',
+        contactNav: 'संपर्क',
+        schemesNav: 'सरकारी योजनाएं',
+        vendorsNav: 'दवा विक्रेता',
+        howToTitle: 'उपयोग करने का तरीका - किसानों के लिए सरल चरण',
+        step1Title: '1. अपनी भाषा चुनें',
+        step1Desc: 'आसान समझ के लिए ऊपरी मेनू से अपनी पसंदीदा भाषा चुनें - अंग्रेजी, हिंदी या गुजराती',
+        step2Title: '2. फसल की तस्वीर लें या अपलोड करें',
+        step2Desc: 'अपनी फसल की तस्वीर लेने के लिए कैमरा बटन दबाएं या अपनी फोन गैलरी से अपलोड करें',
+        step3Title: '3. AI विश्लेषण प्राप्त करें',
+        step3Desc: 'हमारा AI आपकी फसल की छवि का विश्लेषण करेगा और कुछ सेकंड में किसी भी बीमारी या समस्या की पहचान करेगा',
+        step4Title: '4. अधिक मदद के लिए चैट करें',
+        step4Desc: 'हमारे AI सहायक से कोई भी खेती के सवाल पूछें और तुरंत समाधान और सलाह प्राप्त करें',
+        analysisTitle: 'AI फसल विश्लेषण और विशेषज्ञ चैट',
+        imageSection: 'अपनी फसल की छवि कैप्चर या अपलोड करें',
+        chatSection: 'AI कृषि सहायक',
+        captureBtn: 'फोटो लें',
+        uploadBtn: 'छवि अपलोड करें',
+        analyzing: 'आपकी फसल का विश्लेषण कर रहे हैं...',
+        placeholder: 'अपनी फसलों, बीमारियों या खेती की तकनीकों के बारे में पूछें...',
+        greeting: 'नमस्ते! मैं आपका AI कृषि सहायक हूं।',
+        subGreeting: 'फसल की छवि अपलोड करें या मुझसे कोई भी कृषि प्रश्न पूछें!',
+        aboutTitle: 'एग्रोगार्डियन AI के बारे में',
+        contactTitle: 'हमसे संपर्क करें',
+        schemesTitle: 'किसानों के लिए सरकारी योजनाएं',
+        vendorsTitle: 'विश्वसनीय दवा विक्रेता',
+        footerDesc: 'बुद्धिमान कृषि समाधानों से किसानों को सशक्त बनाना',
+        footerCopy: '© 2025 एग्रोगार्डियन AI। किसानों के लिए ❤️ के साथ बनाया गया।',
+        cropLossReduction: 'फसल हानि में कमी',
+        chemicalReduction: 'रसायन के उपयोग में कमी',
+        incomeIncrease: 'आय में वृद्धि',
+        nextStep: 'अगला कदम',
+        prevStep: 'पिछला कदम'
+      },
+      gujarati: {
+        title: 'એગ્રોગાર્ડિયન AI',
+        subtitle: 'આવતીકાલની ફસલનું પોષણ',
+        description: 'કિસાનોને અત્યાધુનિક AI ટેકનોલોજી સાથે સશક્ત બનાવવું, પાકના રોગોની ઓળખ કરવી, માટીના સ્વાસ્થ્યને વધારવું અને વધુ સારા આવતીકાલ માટે ટકાઉ કૃષિ પ્રથાઓનું નિર્માણ કરવું.',
+        homeNav: 'હોમ',
+        aboutNav: 'અમારા વિશે',
+        contactNav: 'સંપર્ક',
+        schemesNav: 'સરકારી યોજનાઓ',
+        vendorsNav: 'દવા વિક્રેતાઓ',
+        howToTitle: 'ઉપયોગ કેવી રીતે કરવો - કિસાનો માટે સરળ પગલાં',
+        step1Title: '1. તમારી ભાષા પસંદ કરો',
+        step1Desc: 'સહેલી સમજ માટે ઉપરના મેનુથી તમારી પસંદીદી ભાષા પસંદ કરો - અંગ્રેજી, હિન્દી અથવા ગુજરાતી',
+        step2Title: '2. પાકનો ફોટો લો અથવા અપલોડ કરો',
+        step2Desc: 'તમારા પાકનો ફોટો લેવા માટે કૅમેરા બટન દબાવો અથવા તમારી ફોન ગૅલેરીમાંથી અપલોડ કરો',
+        step3Title: '3. AI વિશ્લેષણ મેળવો',
+        step3Desc: 'અમારું AI તમારા પાકની છબીનું વિશ્લેષણ કરશે અને કુछ સેકન્ડમાં કોઈપણ બીમારી અથવા સમસ્યાની ઓળખ કરશે',
+        step4Title: '4. વધુ મદદ માટે ચેટ કરો',
+        step4Desc: 'અમારા AI સહાયકને કૃષિના કોઈપણ પ્રશ્નો પૂછો અને તાત્કાલિક ઉકેલો અને સલાહ મેળવો',
+        analysisTitle: 'AI પાક વિશ્લેષણ અને નિષ્ણાત ચેટ',
+        imageSection: 'તમારા પાકની છબી કૅપ્ચર અથવા અપલોડ કરો',
+        chatSection: 'AI કૃષિ સહાયક',
+        captureBtn: 'ફોટો લો',
+        uploadBtn: 'છબી અપલોડ કરો',
+        analyzing: 'તમારા પાકનું વિશ્લેષણ કરી રહ્યાં છીએ...',
+        placeholder: 'તમારા પાકો, બીમારીઓ અથવા ખેતીની તકનીકો વિશે પૂછો...',
+        greeting: 'નમસ્તે! હું તમારો AI કૃષિ સહાયક છું.',
+        subGreeting: 'પાકની છબી અપલોડ કરો અથવા મને કોઈપણ કૃષિ પ્રશ્નો પૂછો!',
+        aboutTitle: 'એગ્રોગાર્ડિયન AI વિશે',
+        contactTitle: 'અમારી સાથે સંપર્ક કરો',
+        schemesTitle: 'કિસાનો માટે સરકારી યોજનાઓ',
+        vendorsTitle: 'વિશ્વસનીય દવા વિક્રેતાઓ',
+        footerDesc: 'બુદ્ધિશાળી કૃષિ ઉકેલો સાથે કિસાનોને સશક્ત બનાવવા',
+        footerCopy: '© 2025 એગ્રોગાર્ડિયન AI. કિસાનો માટે ❤️ સાથે બનાવેલ.',
+        cropLossReduction: 'પાક નુકસાનમાં ઘટાડો',
+        chemicalReduction: 'રસાયણના ઉપયોગમાં ઘટાડો',
+        incomeIncrease: 'આવકમાં વધારો',
+        nextStep: 'આગળનું પગલું',
+        prevStep: 'પાછલું પગલું'
+      }
+    };
+    return texts[language]?.[key] || texts.english[key] || key;
+  };
+
+  const steps = [
+    {
+      title: getText('step1Title'),
+      desc: getText('step1Desc'),
+      icon: '🌍'
+    },
+    {
+      title: getText('step2Title'),
+      desc: getText('step2Desc'),
+      icon: '📱'
+    },
+    {
+      title: getText('step3Title'),
+      desc: getText('step3Desc'),
+      icon: '🤖'
+    },
+    {
+      title: getText('step4Title'),
+      desc: getText('step4Desc'),
+      icon: '💬'
+    }
+  ];
+
+  const startCamera = async () => {
+    try {
+      let stream;
+      try {
+        stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
+      } catch (err) {
+        stream = await navigator.mediaDevices.getUserMedia({ video: true });
+      }
+      
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream;
+        await videoRef.current.play();
+        setIsCameraActive(true);
+      }
+    } catch (err) {
+      alert('Unable to access camera. Please use the upload option instead.');
+    }
+  };
+
+  const stopCamera = () => {
+    if (videoRef.current && videoRef.current.srcObject) {
+      const stream = videoRef.current.srcObject as MediaStream;
+      const tracks = stream.getTracks();
+      tracks.forEach(track => track.stop());
+      videoRef.current.srcObject = null;
+      setIsCameraActive(false);
+    }
+  };
+
+  const capturePhoto = () => {
+    if (videoRef.current && canvasRef.current) {
+      const canvas = canvasRef.current;
+      const video = videoRef.current;
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      const ctx = canvas.getContext('2d');
+      if (ctx) {
+        ctx.drawImage(video, 0, 0);
+        
+        canvas.toBlob((blob) => {
+          if (blob) {
+            const url = URL.createObjectURL(blob);
+            setCapturedImage(url);
+            stopCamera();
+            analyzeCrop(url);
+          }
+        });
+      }
+    }
+  };
+
+  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const url = URL.createObjectURL(file);
+      setCapturedImage(url);
+      analyzeCrop(url);
+    }
+  };
+
+  const analyzeCrop = async (imageUrl: string) => {
+    setIsAnalyzing(true);
+    
+    setTimeout(() => {
+      const response = `AI Analysis Complete
+
+Results:
+• Dark brown spots with rings detected on leaves  
+• Yellowing around affected areas
+• Some leaf curling observed
+
+Crop: Tomato
+Condition: Early Blight Detected
+Severity: Moderate  
+AI Confidence: 89%
+
+Immediate Actions:
+1. Remove affected leaves immediately
+2. Apply copper-based fungicide in evening
+3. Improve air circulation around plants
+
+Nutrition Management:
+• Apply potassium-rich fertilizer
+• Maintain adequate nitrogen levels`;
+      
+      const botMessage = {
+        type: 'bot' as const,
+        content: response
+      };
+      
+      setChatMessages(prev => [...prev, botMessage]);
+      setIsAnalyzing(false);
+    }, 3000);
+  };
+
+  const sendMessage = () => {
+    if (userMessage.trim()) {
+      const userMsg = { type: 'user' as const, content: userMessage };
+      setChatMessages(prev => [...prev, userMsg]);
+      setUserMessage('');
+      
+      setTimeout(() => {
+        const responses = [
+          'Based on your image, I can see good plant structure. Keep soil pH between 6.0-7.0 for optimal growth.',
+          'The uploaded image shows healthy foliage patterns. Consider applying organic compost for better nutrition.',
+          'Your crop appears to be in good condition. Regular monitoring and proper irrigation will ensure healthy growth.'
+        ];
+        
+        const botMsg = {
+          type: 'bot' as const,
+          content: responses[Math.floor(Math.random() * responses.length)]
+        };
+        setChatMessages(prev => [...prev, botMsg]);
+      }, 1500);
+    }
+  };
+
+  const scrollToSection = (sectionId: string) => {
+    document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-green-50 to-emerald-50">
+      {/* Header */}
+      <header className="bg-white shadow-lg border-b-4 border-primary sticky top-0 z-50">
+        <div className="container mx-auto px-4 py-4">
+          <div className="flex justify-between items-center">
+            <div className="flex items-center space-x-3">
+              <div className="bg-primary p-2 rounded-full">
+                <Leaf className="h-8 w-8 text-primary-foreground" />
+              </div>
+              <div>
+                <h1 className="text-xl md:text-2xl font-bold text-primary">{getText('title')}</h1>
+                <p className="text-muted-foreground text-sm">{getText('subtitle')}</p>
+              </div>
+            </div>
+            
+            <nav className="hidden md:flex space-x-6">
+              {['homeNav', 'aboutNav', 'vendorsNav', 'schemesNav', 'contactNav'].map((nav, idx) => (
+                <button 
+                  key={nav}
+                  onClick={() => scrollToSection(['home', 'about', 'vendors', 'schemes', 'contact'][idx])} 
+                  className="text-primary hover:text-primary/80 font-medium transition-colors"
+                >
+                  {getText(nav)}
+                </button>
+              ))}
+            </nav>
+            
+            <select 
+              value={language} 
+              onChange={(e) => setLanguage(e.target.value)}
+              className="bg-accent border-border text-foreground rounded-lg px-3 py-2 focus:ring-2 focus:ring-primary"
+            >
+              <option value="english">English</option>
+              <option value="hindi">हिंदी</option>
+              <option value="gujarati">ગુજરાતી</option>
+            </select>
+          </div>
+        </div>
+      </header>
+
+      {/* Hero Section */}
+      <section id="home" className="py-20 bg-gradient-to-r from-primary via-green-600 to-green-700 text-primary-foreground">
+        <div className="container mx-auto px-4 text-center">
+          <h2 className="text-4xl md:text-6xl font-bold mb-6 drop-shadow-lg">
+            {getText('title')}: <br />
+            <span className="text-green-200">{getText('subtitle')}</span>
+          </h2>
+          <p className="text-lg md:text-xl mb-12 max-w-4xl mx-auto opacity-90 leading-relaxed">
+            {getText('description')}
+          </p>
+          
+          {/* Statistics */}
+          <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto mb-12">
+            <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
+              <div className="text-4xl font-bold mb-2">35%</div>
+              <div className="text-green-200">{getText('cropLossReduction')}</div>
+            </div>
+            <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
+              <div className="text-4xl font-bold mb-2">50%</div>
+              <div className="text-green-200">{getText('chemicalReduction')}</div>
+            </div>
+            <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
+              <div className="text-4xl font-bold mb-2">25%</div>
+              <div className="text-green-200">{getText('incomeIncrease')}</div>
+            </div>
+          </div>
+          
+          <button 
+            onClick={() => scrollToSection('howto')}
+            className="bg-white text-primary px-8 py-4 rounded-full font-bold text-lg hover:bg-green-50 transition-all transform hover:scale-105 shadow-xl"
+          >
+            Get Started <ChevronRight className="inline h-5 w-5 ml-2" />
+          </button>
+        </div>
+      </section>
+
+      {/* How to Use - Vertical Slider */}
+      <section id="howto" className="py-20 bg-accent">
+        <div className="container mx-auto px-4">
+          <h2 className="text-4xl font-bold text-center text-primary mb-16">{getText('howToTitle')}</h2>
+          
+          <div className="max-w-4xl mx-auto">
+            <div className="bg-white rounded-3xl shadow-2xl overflow-hidden">
+              <div className="bg-gradient-to-r from-primary to-green-600 text-white p-8">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-2xl font-bold">Step {currentStep + 1} of {steps.length}</h3>
+                  <div className="text-4xl">{steps[currentStep].icon}</div>
+                </div>
+              </div>
+              
+              <div className="p-12">
+                <h4 className="text-3xl font-bold text-primary mb-6">{steps[currentStep].title}</h4>
+                <p className="text-xl text-muted-foreground mb-8 leading-relaxed">{steps[currentStep].desc}</p>
+                
+                {/* Progress Bar */}
+                <div className="w-full bg-accent rounded-full h-3 mb-8">
+                  <div 
+                    className="bg-primary h-3 rounded-full transition-all duration-500"
+                    style={{ width: `${((currentStep + 1) / steps.length) * 100}%` }}
+                  ></div>
+                </div>
+                
+                <div className="flex justify-between">
+                  <button 
+                    onClick={() => setCurrentStep(Math.max(0, currentStep - 1))}
+                    disabled={currentStep === 0}
+                    className="bg-secondary text-secondary-foreground px-6 py-3 rounded-xl font-medium disabled:opacity-50 hover:bg-secondary/80 transition-colors"
+                  >
+                    {getText('prevStep')}
+                  </button>
+                  
+                  <div className="flex space-x-2">
+                    {steps.map((_, idx) => (
+                      <button
+                        key={idx}
+                        onClick={() => setCurrentStep(idx)}
+                        className={`w-3 h-3 rounded-full transition-colors ${
+                          idx === currentStep ? 'bg-primary' : 'bg-muted'
+                        }`}
+                      />
+                    ))}
+                  </div>
+                  
+                  <button 
+                    onClick={() => setCurrentStep(Math.min(steps.length - 1, currentStep + 1))}
+                    disabled={currentStep === steps.length - 1}
+                    className="bg-primary text-primary-foreground px-6 py-3 rounded-xl font-medium disabled:opacity-50 hover:bg-primary/90 transition-colors"
+                  >
+                    {getText('nextStep')}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* AI Analysis & Chat */}
+      <section id="analysis" className="py-20 bg-background">
+        <div className="container mx-auto px-4">
+          <h2 className="text-4xl font-bold text-center text-primary mb-16">{getText('analysisTitle')}</h2>
+          
+          <div className="grid lg:grid-cols-2 gap-8 max-w-7xl mx-auto">
+            {/* Image Capture Section */}
+            <div className="bg-card rounded-3xl shadow-xl p-8 border border-border">
+              <h3 className="text-2xl font-bold text-card-foreground mb-8 flex items-center">
+                <Camera className="h-8 w-8 mr-3 text-primary" />
+                {getText('imageSection')}
+              </h3>
+              
+              <div className="space-y-6">
+                <div className="relative bg-muted rounded-xl overflow-hidden h-80">
+                  {capturedImage ? (
+                    <img 
+                      src={capturedImage} 
+                      alt="Captured crop" 
+                      className="w-full h-full object-cover"
+                    />
+                  ) : isCameraActive ? (
+                    <video 
+                      ref={videoRef}
+                      autoPlay 
+                      playsInline 
+                      muted
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center">
+                      <div className="text-center text-muted-foreground">
+                        <Camera className="h-16 w-16 mx-auto mb-4 text-primary" />
+                        <p className="text-lg font-medium">Ready to analyze your crops</p>
+                        <p className="text-sm opacity-75">Capture or upload an image to start</p>
+                      </div>
+                    </div>
+                  )}
+                  
+                  {isAnalyzing && (
+                    <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+                      <div className="text-white text-center">
+                        <div className="animate-spin h-12 w-12 border-4 border-white border-t-transparent rounded-full mx-auto mb-4"></div>
+                        <p className="text-lg font-bold">{getText('analyzing')}</p>
+                      </div>
+                    </div>
+                  )}
+                </div>
+                
+                <div className="grid grid-cols-2 gap-4">
+                  {!isCameraActive ? (
+                    <button
+                      onClick={startCamera}
+                      className="bg-primary text-primary-foreground px-6 py-4 rounded-xl hover:bg-primary/90 transition-colors flex items-center justify-center space-x-2 font-medium"
+                    >
+                      <Camera className="h-5 w-5" />
+                      <span>{getText('captureBtn')}</span>
+                    </button>
+                  ) : (
+                    <button
+                      onClick={capturePhoto}
+                      className="bg-green-700 text-white px-6 py-4 rounded-xl hover:bg-green-800 transition-colors flex items-center justify-center space-x-2 font-medium"
+                    >
+                      <Camera className="h-5 w-5" />
+                      <span>Capture Now</span>
+                    </button>
+                  )}
+                  
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageUpload}
+                    className="hidden"
+                  />
+                  
+                  <button
+                    onClick={() => fileInputRef.current?.click()}
+                    className="bg-secondary text-secondary-foreground px-6 py-4 rounded-xl hover:bg-secondary/80 transition-colors flex items-center justify-center space-x-2 font-medium"
+                  >
+                    <Upload className="h-5 w-5" />
+                    <span>{getText('uploadBtn')}</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* Chat Section */}
+            <div className="bg-card rounded-3xl shadow-xl p-8 border border-border">
+              <h3 className="text-2xl font-bold text-card-foreground mb-8 flex items-center">
+                <Bot className="h-8 w-8 mr-3 text-primary" />
+                {getText('chatSection')}
+              </h3>
+              
+              <div className="flex flex-col h-96">
+                <div className="flex-1 overflow-y-auto bg-muted rounded-xl p-6 mb-6 space-y-4">
+                  {chatMessages.length === 0 ? (
+                    <div className="text-center text-muted-foreground mt-20">
+                      <Bot className="h-16 w-16 mx-auto mb-4 text-primary" />
+                      <p className="font-medium text-lg">{getText('greeting')}</p>
+                      <p className="text-sm mt-2">{getText('subGreeting')}</p>
+                    </div>
+                  ) : (
+                    chatMessages.map((message, index) => (
+                      <div key={index} className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}>
+                        <div className={`max-w-xs lg:max-w-md px-4 py-3 rounded-2xl ${
+                          message.type === 'user' 
+                            ? 'bg-primary text-primary-foreground' 
+                            : 'bg-card border-2 border-border text-card-foreground'
+                        }`}>
+                          <div className="flex items-start space-x-2">
+                            {message.type === 'bot' && <Bot className="h-4 w-4 text-primary mt-1 flex-shrink-0" />}
+                            {message.type === 'user' && <User className="h-4 w-4 text-primary-foreground mt-1 flex-shrink-0" />}
+                            <div className="whitespace-pre-wrap text-sm leading-relaxed">{message.content}</div>
+                          </div>
+                        </div>
+                      </div>
+                    ))
+                  )}
+                </div>
+                
+                <div className="flex space-x-3">
+                  <input
+                    type="text"
+                    value={userMessage}
+                    onChange={(e) => setUserMessage(e.target.value)}
+                    onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
+                    placeholder={getText('placeholder')}
+                    className="flex-1 border-2 border-border rounded-xl px-4 py-3 focus:ring-2 focus:ring-primary focus:border-primary bg-background text-sm"
+                  />
+                  <button
+                    onClick={sendMessage}
+                    disabled={!userMessage.trim()}
+                    className="bg-primary text-primary-foreground px-4 py-3 rounded-xl hover:bg-primary/90 transition-colors disabled:opacity-50"
+                  >
+                    <Send className="h-5 w-5" />
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <canvas ref={canvasRef} className="hidden" />
+      </section>
+
+      {/* Medicine Vendors Section */}
+      <section id="vendors" className="py-20 bg-accent">
+        <div className="container mx-auto px-4">
+          <h2 className="text-4xl font-bold text-center text-primary mb-16">{getText('vendorsTitle')}</h2>
+          
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
+            {[
+              { name: "AgroLife Sciences", medicine: "Fungicides & Pesticides", rating: 4.8, contact: "+91-9876543210", location: "Mumbai, Maharashtra" },
+              { name: "Bayer CropScience", medicine: "Crop Protection Solutions", rating: 4.9, contact: "+91-9876543211", location: "Hyderabad, Telangana" },
+              { name: "UPL Limited", medicine: "Herbicides & Insecticides", rating: 4.7, contact: "+91-9876543212", location: "Gujarat, India" },
+              { name: "Rallis India", medicine: "Organic Fertilizers", rating: 4.6, contact: "+91-9876543213", location: "Bangalore, Karnataka" },
+              { name: "Coromandel International", medicine: "Nutrition & Protection", rating: 4.8, contact: "+91-9876543214", location: "Secunderabad, Telangana" },
+              { name: "Dhanuka Agritech", medicine: "Specialty Chemicals", rating: 4.5, contact: "+91-9876543215", location: "New Delhi, India" }
+            ].map((vendor, idx) => (
+              <div key={idx} className="bg-card rounded-2xl shadow-lg p-6 border border-border hover:shadow-xl transition-all hover:-translate-y-1">
+                <div className="flex items-center justify-between mb-4">
+                  <Stethoscope className="h-8 w-8 text-primary" />
+                  <div className="flex items-center space-x-1">
+                    <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                    <span className="text-sm font-medium">{vendor.rating}</span>
+                  </div>
+                </div>
+                <h3 className="text-xl font-bold text-card-foreground mb-2">{vendor.name}</h3>
+                <p className="text-muted-foreground mb-3 flex items-center">
+                  <Package className="h-4 w-4 mr-2" />
+                  {vendor.medicine}
+                </p>
+                <p className="text-sm text-muted-foreground mb-3 flex items-center">
+                  <MapPin className="h-4 w-4 mr-2" />
+                  {vendor.location}
+                </p>
+                <p className="text-sm text-muted-foreground mb-4 flex items-center">
+                  <Phone className="h-4 w-4 mr-2" />
+                  {vendor.contact}
+                </p>
+                <button className="w-full bg-primary text-primary-foreground py-2 px-4 rounded-lg hover:bg-primary/90 transition-colors font-medium">
+                  Contact Vendor
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Government Schemes Section */}
+      <section id="schemes" className="py-20 bg-background">
+        <div className="container mx-auto px-4">
+          <h2 className="text-4xl font-bold text-center text-primary mb-16">{getText('schemesTitle')}</h2>
+          
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
+            {[
+              { name: "PM-KISAN Scheme", desc: "Rs 6,000 annual income support for farmers", link: "https://pmkisan.gov.in/" },
+              { name: "Crop Insurance Scheme", desc: "Protection against crop losses due to natural disasters", link: "https://pmfby.gov.in/" },
+              { name: "Kisan Credit Card", desc: "Agricultural loan facility at subsidized rates", link: "https://www.nabard.org/content1.aspx?id=570" },
+              { name: "Soil Health Card", desc: "Free soil quality testing and recommendations", link: "https://soilhealth.dac.gov.in/" },
+              { name: "e-NAM Online Market", desc: "Digital platform to sell crops at better prices", link: "https://enam.gov.in/" },
+              { name: "Gujarat Agriculture Portal", desc: "State specific agricultural schemes and benefits", link: "https://agri.gujarat.gov.in/" }
+            ].map((scheme, idx) => (
+              <div key={idx} className={`bg-card rounded-2xl shadow-lg p-6 border-l-4 ${
+                ['border-green-500', 'border-green-600', 'border-green-700', 'border-green-800', 'border-green-400', 'border-green-300'][idx]
+              } hover:shadow-xl transition-all hover:-translate-y-1`}>
+                <div className="flex items-start justify-between mb-4">
+                  <Award className="h-8 w-8 text-primary" />
+                  <Shield className="h-6 w-6 text-muted-foreground" />
+                </div>
+                <h3 className="text-xl font-bold text-card-foreground mb-3">{scheme.name}</h3>
+                <p className="text-muted-foreground text-sm mb-6 leading-relaxed">{scheme.desc}</p>
+                <a 
+                  href={scheme.link} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="bg-primary text-primary-foreground px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors text-sm font-medium inline-flex items-center space-x-2"
+                >
+                  <span>Learn More</span>
+                  <ChevronRight className="h-4 w-4" />
+                </a>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* About Section */}
+      <section id="about" className="py-20 bg-accent">
+        <div className="container mx-auto px-4">
+          <h2 className="text-4xl font-bold text-center text-primary mb-16">{getText('aboutTitle')}</h2>
+          
+          <div className="grid md:grid-cols-3 gap-12 max-w-6xl mx-auto">
+            <div className="text-center">
+              <div className="bg-primary/10 p-6 rounded-full w-24 h-24 mx-auto mb-6 flex items-center justify-center">
+                <Leaf className="h-12 w-12 text-primary" />
+              </div>
+              <h3 className="text-2xl font-bold text-primary mb-4">AI-Powered Analysis</h3>
+              <p className="text-muted-foreground leading-relaxed">Precise crop disease identification through advanced machine learning technology and computer vision algorithms.</p>
+            </div>
+            
+            <div className="text-center">
+              <div className="bg-primary/10 p-6 rounded-full w-24 h-24 mx-auto mb-6 flex items-center justify-center">
+                <Users className="h-12 w-12 text-primary" />
+              </div>
+              <h3 className="text-2xl font-bold text-primary mb-4">Farmer-Centric Design</h3>
+              <p className="text-muted-foreground leading-relaxed">Simplified interface designed specifically for farmers with multilingual support and intuitive navigation.</p>
+            </div>
+            
+            <div className="text-center">
+              <div className="bg-primary/10 p-6 rounded-full w-24 h-24 mx-auto mb-6 flex items-center justify-center">
+                <MessageCircle className="h-12 w-12 text-primary" />
+              </div>
+              <h3 className="text-2xl font-bold text-primary mb-4">24/7 AI Support</h3>
+              <p className="text-muted-foreground leading-relaxed">Get instant agricultural advice and support anytime, anywhere you need it with our intelligent chatbot.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Contact Section */}
+      <section id="contact" className="py-20 bg-background">
+        <div className="container mx-auto px-4">
+          <h2 className="text-4xl font-bold text-center text-primary mb-16">{getText('contactTitle')}</h2>
+          
+          <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+            <div className="text-center p-8 bg-card rounded-2xl shadow-lg border border-border">
+              <div className="bg-primary/10 p-4 rounded-full w-16 h-16 mx-auto mb-6 flex items-center justify-center">
+                <Phone className="h-8 w-8 text-primary" />
+              </div>
+              <h3 className="font-bold text-card-foreground mb-3 text-xl">Helpline</h3>
+              <p className="text-muted-foreground text-lg mb-2">1800-180-1551</p>
+              <p className="text-sm text-muted-foreground">Available 24/7</p>
+            </div>
+            
+            <div className="text-center p-8 bg-card rounded-2xl shadow-lg border border-border">
+              <div className="bg-primary/10 p-4 rounded-full w-16 h-16 mx-auto mb-6 flex items-center justify-center">
+                <Mail className="h-8 w-8 text-primary" />
+              </div>
+              <h3 className="font-bold text-card-foreground mb-3 text-xl">Email Support</h3>
+              <p className="text-muted-foreground text-lg mb-2">support@agroguardian.ai</p>
+              <p className="text-sm text-muted-foreground">Response within 24hrs</p>
+            </div>
+            
+            <div className="text-center p-8 bg-card rounded-2xl shadow-lg border border-border">
+              <div className="bg-primary/10 p-4 rounded-full w-16 h-16 mx-auto mb-6 flex items-center justify-center">
+                <MapPin className="h-8 w-8 text-primary" />
+              </div>
+              <h3 className="font-bold text-card-foreground mb-3 text-xl">Location</h3>
+              <p className="text-muted-foreground text-lg mb-2">Vadodara, Gujarat</p>
+              <p className="text-sm text-muted-foreground">India</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="bg-primary text-primary-foreground py-12">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-8">
+            <div className="flex items-center justify-center space-x-3 mb-6">
+              <div className="bg-white/20 p-3 rounded-full">
+                <Leaf className="h-8 w-8 text-white" />
+              </div>
+              <h3 className="text-3xl font-bold">{getText('title')}</h3>
+            </div>
+            <p className="text-green-200 text-lg max-w-2xl mx-auto leading-relaxed">
+              {getText('footerDesc')}
+            </p>
+          </div>
+          
+          <div className="border-t border-white/20 pt-8">
+            <p className="text-center text-green-300 flex items-center justify-center space-x-2">
+              <span>{getText('footerCopy')}</span>
+              <Heart className="h-4 w-4 text-red-400" />
+            </p>
+          </div>
+        </div>
+      </footer>
+    </div>
+  );
+};
+
+export default AgroGuardianAI;
