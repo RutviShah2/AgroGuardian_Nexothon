@@ -695,61 +695,39 @@ const AgroGuardianAI = () => {
         </div>
       </section>
 
-      {/* How to Use - Vertical Slider */}
+      {/* How to Use - Horizontal Steps */}
       <section id="howto" className="py-20 bg-green-50">
         <div className="container mx-auto px-4">
           <h2 className="text-4xl font-bold text-center text-primary mb-16 fade-in">{getText('howToTitle')}</h2>
-          
-          <div className="max-w-4xl mx-auto">
-            <div className="bg-white rounded-3xl shadow-2xl overflow-hidden">
-              <div className="bg-gradient-to-r from-primary to-green-600 text-white p-8">
-                <div className="flex items-center justify-between">
-                  <h3 className="text-2xl font-bold">Step {currentStep + 1} of {steps.length}</h3>
-                  <div className="text-4xl bounce-gentle">{steps[currentStep].icon}</div>
-                </div>
+          <div className="max-w-6xl mx-auto">
+            <div className="flex flex-col md:flex-row justify-between items-stretch gap-8">
+              {/* Step 1 */}
+              <div className="flex-1 bg-white rounded-3xl shadow-2xl p-8 flex flex-col items-center text-center">
+                <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80" alt="Upload Crop" className="w-32 h-32 object-cover rounded-xl mb-6" />
+                <div className="text-4xl mb-2">🌍</div>
+                <h4 className="text-2xl font-bold text-primary mb-4">{steps[0].title}</h4>
+                <p className="text-base text-muted-foreground mb-2">{steps[0].desc}</p>
               </div>
-              
-              <div className="p-12">
-                <h4 className="text-3xl font-bold text-primary mb-6">{steps[currentStep].title}</h4>
-                <p className="text-xl text-muted-foreground mb-8 leading-relaxed">{steps[currentStep].desc}</p>
-                
-                {/* Progress Bar */}
-                <div className="w-full bg-accent rounded-full h-3 mb-8">
-                  <div 
-                    className="bg-primary h-3 rounded-full transition-all duration-500 shimmer"
-                    style={{ width: `${((currentStep + 1) / steps.length) * 100}%` }}
-                  ></div>
-                </div>
-                
-                <div className="flex justify-between">
-                  <button 
-                    onClick={() => setCurrentStep(Math.max(0, currentStep - 1))}
-                    disabled={currentStep === 0}
-                    className="bg-secondary text-secondary-foreground px-6 py-3 rounded-xl font-medium disabled:opacity-50 transition-colors"
-                  >
-                    {getText('prevStep')}
-                  </button>
-                  
-                  <div className="flex space-x-2">
-                    {steps.map((_, idx) => (
-                      <button
-                        key={idx}
-                        onClick={() => setCurrentStep(idx)}
-                        className={`w-3 h-3 rounded-full transition-colors ${
-                          idx === currentStep ? 'bg-primary' : 'bg-muted'
-                        }`}
-                      />
-                    ))}
-                  </div>
-                  
-                  <button 
-                    onClick={() => setCurrentStep(Math.min(steps.length - 1, currentStep + 1))}
-                    disabled={currentStep === steps.length - 1}
-                    className="bg-primary text-primary-foreground px-6 py-3 rounded-xl font-medium disabled:opacity-50 transition-colors"
-                  >
-                    {getText('nextStep')}
-                  </button>
-                </div>
+              {/* Step 2 */}
+              <div className="flex-1 bg-white rounded-3xl shadow-2xl p-8 flex flex-col items-center text-center">
+                <img src="https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=400&q=80" alt="AI Analysis" className="w-32 h-32 object-cover rounded-xl mb-6" />
+                <div className="text-4xl mb-2">📱</div>
+                <h4 className="text-2xl font-bold text-primary mb-4">{steps[1].title}</h4>
+                <p className="text-base text-muted-foreground mb-2">{steps[1].desc}</p>
+              </div>
+              {/* Step 3 */}
+              <div className="flex-1 bg-white rounded-3xl shadow-2xl p-8 flex flex-col items-center text-center">
+                <img src="https://images.unsplash.com/photo-1501876725168-00c445821c9e?auto=format&fit=crop&w=400&q=80" alt="Get Results" className="w-32 h-32 object-cover rounded-xl mb-6" />
+                <div className="text-4xl mb-2">🤖</div>
+                <h4 className="text-2xl font-bold text-primary mb-4">{steps[2].title}</h4>
+                <p className="text-base text-muted-foreground mb-2">{steps[2].desc}</p>
+              </div>
+              {/* Step 4 */}
+              <div className="flex-1 bg-white rounded-3xl shadow-2xl p-8 flex flex-col items-center text-center">
+                <img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80" alt="Take Action" className="w-32 h-32 object-cover rounded-xl mb-6" />
+                <div className="text-4xl mb-2">💬</div>
+                <h4 className="text-2xl font-bold text-primary mb-4">{steps[3].title}</h4>
+                <p className="text-base text-muted-foreground mb-2">{steps[3].desc}</p>
               </div>
             </div>
           </div>
