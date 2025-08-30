@@ -584,8 +584,7 @@ const AgroGuardianAI = () => {
                         </div>
                       )}
                     </div>
-                    <h4 className={`text-2xl font-bold mb-3 transition-colors duration-200 ${activeStep === idx ? 'text-primary' : 'text-primary'}`}>{step.title}</h4>
-                    {/* Only show the step title, not the desc, to avoid 'step1Detail' etc. showing up */}
+                    {/* Removed the green font (step.title) from each box as requested; only normal font remains */}
                     <p className="text-sm text-muted-foreground mb-0 leading-relaxed text-justify" style={{fontWeight: 400, marginTop: 0, marginBottom: 0, padding: '0 0.5rem', minHeight: '72px', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>{step.title}</p>
                   </div>
                 ));
