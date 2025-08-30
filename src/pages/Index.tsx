@@ -1072,7 +1072,7 @@ const AgroGuardianAI = () => {
           <h2 className="text-4xl font-bold text-center text-primary mb-16 fade-in">{getText('vendorsTitle')}</h2>
           
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
-            {[
+            {[ 
               { name: "AgroLife Sciences", medicine: "Fungicides & Pesticides", rating: 4.8, contact: "+91-9876543210", location: "Mumbai, Maharashtra" },
               { name: "Bayer CropScience", medicine: "Crop Protection Solutions", rating: 4.9, contact: "+91-9876543211", location: "Hyderabad, Telangana" },
               { name: "UPL Limited", medicine: "Herbicides & Insecticides", rating: 4.7, contact: "+91-9876543212", location: "Gujarat, India" },
@@ -1080,7 +1080,10 @@ const AgroGuardianAI = () => {
               { name: "Coromandel International", medicine: "Nutrition & Protection", rating: 4.8, contact: "+91-9876543214", location: "Secunderabad, Telangana" },
               { name: "Dhanuka Agritech", medicine: "Specialty Chemicals", rating: 4.5, contact: "+91-9876543215", location: "New Delhi, India" }
             ].map((vendor, idx) => (
-              <div key={idx} className="bg-card rounded-2xl shadow-lg p-6 border border-border">
+              <div
+                key={idx}
+                className="bg-card rounded-2xl shadow-lg p-6 border border-border transition-all duration-200 cursor-pointer hover:scale-105 hover:shadow-2xl hover:border-primary"
+              >
                 <div className="flex items-center justify-between mb-4">
                   <Stethoscope className="h-8 w-8 text-primary" />
                   <div className="flex items-center space-x-1">
@@ -1116,7 +1119,7 @@ const AgroGuardianAI = () => {
           <h2 className="text-4xl font-bold text-center text-primary mb-16 fade-in">{getText('schemesTitle')}</h2>
           
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
-            {[
+            {[ 
               { name: "PM-KISAN Scheme", desc: "Rs 6,000 annual income support for farmers", link: "https://pmkisan.gov.in/" },
               { name: "Crop Insurance Scheme", desc: "Protection against crop losses due to natural disasters", link: "https://pmfby.gov.in/" },
               { name: "Kisan Credit Card", desc: "Agricultural loan facility at subsidized rates", link: "https://www.nabard.org/content1.aspx?id=570" },
@@ -1124,9 +1127,12 @@ const AgroGuardianAI = () => {
               { name: "e-NAM Online Market", desc: "Digital platform to sell crops at better prices", link: "https://enam.gov.in/" },
               { name: "Gujarat Agriculture Portal", desc: "State specific agricultural schemes and benefits", link: "https://agri.gujarat.gov.in/" }
             ].map((scheme, idx) => (
-              <div key={idx} className={`bg-card rounded-2xl shadow-lg p-6 border-l-4 ${
-                ['border-green-500', 'border-green-600', 'border-green-700', 'border-green-800', 'border-green-400', 'border-green-300'][idx]
-              }`}>
+              <div
+                key={idx}
+                className={`bg-card rounded-2xl shadow-lg p-6 border-l-4 transition-all duration-200 cursor-pointer hover:scale-105 hover:shadow-2xl hover:border-green-600 ${
+                  ['border-green-500', 'border-green-600', 'border-green-700', 'border-green-800', 'border-green-400', 'border-green-300'][idx]
+                }`}
+              >
                 <div className="flex items-start justify-between mb-4">
                   <Award className="h-8 w-8 text-primary" />
                   <Shield className="h-6 w-6 text-muted-foreground" />
