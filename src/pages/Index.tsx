@@ -179,6 +179,209 @@ const AgroGuardianAI = () => {
     return texts[key]?.[language] || key;
   };
 
+  // Sample crop analysis data
+  const cropAnalysis: CropAnalysis = {
+    farmerName: "Rajesh Kumar",
+    farmLocation: "Nashik, Maharashtra",
+    cropType: "Tomato",
+    diseaseDetected: "Late Blight",
+    severity: "Moderate",
+    confidence: 87.5,
+    recommendations: [
+      "Apply copper-based fungicide immediately",
+      "Improve drainage in affected areas",
+      "Remove infected plant debris",
+      "Monitor humidity levels regularly"
+    ],
+    treatmentMethods: [
+      "Foliar spray with Mancozeb 75% WP",
+      "Soil treatment with Trichoderma",
+      "Organic neem oil application",
+      "Proper field sanitation"
+    ],
+    vendorContacts: [
+      {
+        name: "AgriSupply Co.",
+        phone: "+91-9876543210",
+        email: "contact@agrisupply.com",
+        products: ["Mancozeb 75% WP", "Copper Oxychloride"]
+      },
+      {
+        name: "FarmCare Solutions",
+        phone: "+91-9123456789",
+        email: "sales@farmcare.in",
+        products: ["Trichoderma", "Organic Neem Oil"]
+      }
+    ],
+    governmentSchemes: [
+      {
+        name: "PM-KISAN Scheme",
+        description: "Direct income support to farmers",
+        eligibility: "Small and marginal farmers",
+        benefit: "₹6,000 per year"
+      },
+      {
+        name: "Pradhan Mantri Fasal Bima Yojana",
+        description: "Crop insurance scheme",
+        eligibility: "All farmers growing notified crops",
+        benefit: "Premium subsidy up to 2%"
+      }
+    ],
+    analysisDate: new Date().toLocaleDateString('en-IN'),
+    imageUrl: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='150' viewBox='0 0 200 150'%3E%3Crect width='200' height='150' fill='%23f3f4f6'/%3E%3Ctext x='100' y='80' text-anchor='middle' fill='%236b7280' font-family='Arial' font-size='12'%3ECrop Image%3C/text%3E%3C/svg%3E"
+  };
+
+  const handleOtpVerification = () => {
+    setDownloadError('');
+    if (otpInput === '123456') {
+      setIsOtpVerified(true);
+      setShowOtpForm(false);
+    } else {
+      setDownloadError('Invalid OTP. Please enter the correct OTP.');
+    }
+  };
+
+  const generatePDF = async () => {
+    setIsGenerating(true);
+    
+    // Simulate PDF generation delay
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    
+    // Create PDF content as HTML string for download
+    const pdfContent = `
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>AgroGuardian Crop Analysis Report</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; color: #333; }
+        .header { text-align: center; border-bottom: 2px solid #10b981; padding-bottom: 20px; margin-bottom: 30px; }
+        .header h1 { color: #10b981; margin: 0; }
+        .header p { color: #6b7280; margin: 5px 0; }
+        .section { margin-bottom: 25px; }
+        .section h2 { color: #10b981; border-bottom: 1px solid #e5e7eb; padding-bottom: 5px; }
+        .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 15px 0; }
+        .info-item { padding: 10px; background: #f9fafb; border-radius: 5px; }
+        .info-item strong { color: #374151; }
+        .recommendations, .treatments { background: #f0f9ff; padding: 15px; border-radius: 8px; margin: 10px 0; }
+        .recommendations h3, .treatments h3 { color: #0369a1; margin-top: 0; }
+        .vendor { background: #fef3c7; padding: 15px; margin: 10px 0; border-radius: 8px; }
+        .scheme { background: #ecfdf5; padding: 15px; margin: 10px 0; border-radius: 8px; }
+        .severity-high { color: #dc2626; }
+        .severity-moderate { color: #d97706; }
+        .severity-low { color: #059669; }
+        .confidence { font-size: 18px; font-weight: bold; color: #10b981; }
+        ul { margin: 10px 0; padding-left: 20px; }
+        li { margin: 5px 0; }
+        .footer { margin-top: 40px; text-align: center; color: #6b7280; font-size: 12px; border-top: 1px solid #e5e7eb; padding-top: 20px; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🌱 AgroGuardian-AI</h1>
+        <p>Crop Analysis Report</p>
+        <p>Generated on: ${cropAnalysis.analysisDate}</p>
+    </div>
+
+    <div class="section">
+        <h2>Farmer Information</h2>
+        <div class="info-grid">
+            <div class="info-item">
+                <strong>Farmer Name:</strong> ${cropAnalysis.farmerName}
+            </div>
+            <div class="info-item">
+                <strong>Farm Location:</strong> ${cropAnalysis.farmLocation}
+            </div>
+            <div class="info-item">
+                <strong>Crop Type:</strong> ${cropAnalysis.cropType}
+            </div>
+            <div class="info-item">
+                <strong>Analysis Date:</strong> ${cropAnalysis.analysisDate}
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Disease Analysis</h2>
+        <div class="info-grid">
+            <div class="info-item">
+                <strong>Disease Detected:</strong> ${cropAnalysis.diseaseDetected}
+            </div>
+            <div class="info-item">
+                <strong>Severity:</strong> <span class="severity-${cropAnalysis.severity.toLowerCase()}">${cropAnalysis.severity}</span>
+            </div>
+        </div>
+        <div class="info-item">
+            <strong>Confidence Level:</strong> <span class="confidence">${cropAnalysis.confidence}%</span>
+        </div>
+    </div>
+
+    <div class="recommendations">
+        <h3>🎯 Recommendations</h3>
+        <ul>
+            ${cropAnalysis.recommendations.map(rec => `<li>${rec}</li>`).join('')}
+        </ul>
+    </div>
+
+    <div class="treatments">
+        <h3>💊 Treatment Methods</h3>
+        <ul>
+            ${cropAnalysis.treatmentMethods.map(treatment => `<li>${treatment}</li>`).join('')}
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>Vendor Contacts</h2>
+        ${cropAnalysis.vendorContacts.map(vendor => `
+            <div class="vendor">
+                <h3>${vendor.name}</h3>
+                <p><strong>Phone:</strong> ${vendor.phone}</p>
+                <p><strong>Email:</strong> ${vendor.email}</p>
+                <p><strong>Products:</strong> ${vendor.products.join(', ')}</p>
+            </div>
+        `).join('')}
+    </div>
+
+    <div class="section">
+        <h2>Government Schemes</h2>
+        ${cropAnalysis.governmentSchemes.map(scheme => `
+            <div class="scheme">
+                <h3>${scheme.name}</h3>
+                <p><strong>Description:</strong> ${scheme.description}</p>
+                <p><strong>Eligibility:</strong> ${scheme.eligibility}</p>
+                <p><strong>Benefit:</strong> ${scheme.benefit}</p>
+            </div>
+        `).join('')}
+    </div>
+
+    <div class="footer">
+        <p>This report is generated by AgroGuardian-AI Digital Assistant</p>
+        <p>For support, contact: support@agroguardian.ai | +91-1800-XXX-XXXX</p>
+    </div>
+</body>
+</html>`;
+
+    // Create and download the PDF
+    const blob = new Blob([pdfContent], { type: 'text/html' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `AgroGuardian_Report_${cropAnalysis.farmerName.replace(/\s+/g, '_')}_${Date.now()}.html`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+
+    setIsGenerating(false);
+    
+    // Reset after successful download
+    setTimeout(() => {
+      setIsOtpVerified(false);
+      setOtpInput('');
+    }, 3000);
+  };
+
   const steps = [
     {
       title: getText('step1Title'),
@@ -650,6 +853,178 @@ const AgroGuardianAI = () => {
         </div>
         
         <canvas ref={canvasRef} className="hidden" />
+      </section>
+
+      {/* Download Report Section */}
+      <section id="download" className="py-20 bg-gradient-to-br from-green-50 to-blue-50">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto">
+            {/* Header */}
+            <div className="text-center mb-8">
+              <div className="flex items-center justify-center mb-4">
+                <Leaf className="h-12 w-12 text-green-600 mr-3" />
+                <h2 className="text-4xl font-bold text-gray-800">AgroGuardian-AI</h2>
+              </div>
+              <p className="text-gray-600 text-lg">Crop Analysis Report - Download Center</p>
+            </div>
+
+            {/* Analysis Summary Card */}
+            <div className="bg-white rounded-xl shadow-lg p-6 mb-8">
+              <div className="flex items-center mb-4">
+                <FileText className="h-6 w-6 text-green-600 mr-2" />
+                <h3 className="text-2xl font-semibold text-gray-800">Analysis Summary</h3>
+              </div>
+              
+              <div className="grid md:grid-cols-2 gap-6">
+                <div className="space-y-3">
+                  <div className="flex items-center">
+                    <MapPin className="h-4 w-4 text-gray-500 mr-2" />
+                    <span className="text-gray-700">Nashik, Maharashtra</span>
+                  </div>
+                  <div className="flex items-center">
+                    <Calendar className="h-4 w-4 text-gray-500 mr-2" />
+                    <span className="text-gray-700">{new Date().toLocaleDateString('en-IN')}</span>
+                  </div>
+                  <div className="bg-gray-50 p-3 rounded-lg">
+                    <p className="text-sm text-gray-600">Crop Type</p>
+                    <p className="font-semibold text-gray-800">Tomato</p>
+                  </div>
+                </div>
+                
+                <div className="space-y-3">
+                  <div className="bg-red-50 p-3 rounded-lg">
+                    <p className="text-sm text-gray-600">Disease Detected</p>
+                    <p className="font-semibold text-red-600">Late Blight</p>
+                  </div>
+                  <div className="bg-orange-50 p-3 rounded-lg">
+                    <p className="text-sm text-gray-600">Severity Level</p>
+                    <p className="font-semibold text-orange-600">Moderate</p>
+                  </div>
+                  <div className="bg-green-50 p-3 rounded-lg">
+                    <p className="text-sm text-gray-600">Confidence</p>
+                    <p className="font-semibold text-green-600">87.5%</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Download Section */}
+            <div className="bg-white rounded-xl shadow-lg p-6">
+              <div className="text-center">
+                <div className="flex items-center justify-center mb-4">
+                  <Download className="h-8 w-8 text-blue-600 mr-2" />
+                  <h3 className="text-2xl font-semibold text-gray-800">Download Report</h3>
+                </div>
+
+                {!showOtpForm && !isOtpVerified && (
+                  <div>
+                    <p className="text-gray-600 mb-6">
+                      Click the button below to download your detailed crop analysis report in PDF format.
+                    </p>
+                    <button
+                      onClick={() => setShowOtpForm(true)}
+                      className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold transition-colors duration-200 flex items-center mx-auto hover-scale"
+                    >
+                      <Shield className="h-5 w-5 mr-2" />
+                      Request Download
+                    </button>
+                  </div>
+                )}
+
+                {showOtpForm && !isOtpVerified && (
+                  <div className="max-w-md mx-auto">
+                    <div className="bg-blue-50 p-4 rounded-lg mb-6">
+                      <Shield className="h-6 w-6 text-blue-600 mx-auto mb-2" />
+                      <p className="text-blue-800 font-medium">OTP Verification Required</p>
+                      <p className="text-blue-600 text-sm">Enter the OTP to download your report securely</p>
+                    </div>
+
+                    <div className="space-y-4">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                          Enter OTP
+                        </label>
+                        <input
+                          type="text"
+                          value={otpInput}
+                          onChange={(e) => setOtpInput(e.target.value)}
+                          placeholder="Enter 6-digit OTP"
+                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-center text-lg font-mono"
+                          maxLength={6}
+                        />
+                      </div>
+                      
+                      {downloadError && (
+                        <div className="flex items-center text-red-600 text-sm">
+                          <AlertCircle className="h-4 w-4 mr-1" />
+                          {downloadError}
+                        </div>
+                      )}
+
+                      <div className="flex space-x-3">
+                        <button
+                          onClick={() => setShowOtpForm(false)}
+                          className="flex-1 bg-gray-300 hover:bg-gray-400 text-gray-700 px-4 py-2 rounded-lg font-medium transition-colors"
+                        >
+                          Cancel
+                        </button>
+                        <button
+                          onClick={handleOtpVerification}
+                          disabled={otpInput.length !== 6}
+                          className="flex-1 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-300 text-white px-4 py-2 rounded-lg font-medium transition-colors"
+                        >
+                          Verify OTP
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {isOtpVerified && (
+                  <div className="max-w-md mx-auto">
+                    <div className="bg-green-50 p-4 rounded-lg mb-6">
+                      <CheckCircle className="h-6 w-6 text-green-600 mx-auto mb-2" />
+                      <p className="text-green-800 font-medium">OTP Verified Successfully!</p>
+                      <p className="text-green-600 text-sm">You can now download your report</p>
+                    </div>
+
+                    <button
+                      onClick={generatePDF}
+                      disabled={isGenerating}
+                      className="bg-green-600 hover:bg-green-700 disabled:bg-green-400 text-white px-8 py-3 rounded-lg font-semibold transition-colors duration-200 flex items-center mx-auto hover-scale"
+                    >
+                      {isGenerating ? (
+                        <>
+                          <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                          Generating PDF...
+                        </>
+                      ) : (
+                        <>
+                          <Download className="h-5 w-5 mr-2" />
+                          Download PDF Report
+                        </>
+                      )}
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Contact Information */}
+            <div className="mt-8 text-center text-gray-600">
+              <div className="flex items-center justify-center space-x-6">
+                <div className="flex items-center">
+                  <Phone className="h-4 w-4 mr-1" />
+                  <span className="text-sm">+91-1800-XXX-XXXX</span>
+                </div>
+                <div className="flex items-center">
+                  <Mail className="h-4 w-4 mr-1" />
+                  <span className="text-sm">support@agroguardian.ai</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
 
       {/* Medicine Vendors Section */}
