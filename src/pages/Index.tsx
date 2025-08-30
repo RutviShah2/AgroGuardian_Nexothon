@@ -635,11 +635,23 @@ const AgroGuardianAI = () => {
         <div className="absolute inset-0 bg-black/20"></div>
         <div className="container mx-auto px-4 text-center relative z-10">
           <div className="fade-in">
-            <h2 className="text-4xl md:text-6xl font-bold mb-6 drop-shadow-lg">
-              {getText('title')}: <br />
-              <span className="text-green-200">{getText('subtitle')}</span>
-            </h2>
-            <p className="text-lg md:text-xl mb-12 max-w-4xl mx-auto opacity-90 leading-relaxed">
+            <h1 className="text-5xl md:text-7xl font-extrabold mb-4 text-white text-center drop-shadow-2xl breathing-animation"
+                style={{
+                  textShadow: '0 4px 32px rgba(0,0,0,0.7), 0 2px 0 #222',
+                  letterSpacing: '0.01em',
+                }}>
+              {getText('title')}:<br />
+              <span className="block text-4xl md:text-6xl font-extrabold mt-2"
+                style={{
+                  color: '#fff',
+                  textShadow: '0 4px 32px rgba(0,0,0,0.7), 0 2px 0 #222',
+                  WebkitTextStroke: '1px #15803d',
+                  lineHeight: 1.1,
+                }}>
+                {getText('subtitle')}
+              </span>
+            </h1>
+            <p className="text-xl md:text-2xl mb-12 max-w-3xl mx-auto font-medium text-white text-center" style={{textShadow: '0 2px 16px rgba(0,0,0,0.7), 0 1px 0 #222'}}>
               {getText('description')}
             </p>
           </div>
