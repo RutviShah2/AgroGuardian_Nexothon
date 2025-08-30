@@ -31,6 +31,8 @@ import {
   Mail
 } from 'lucide-react';
 
+import { useLanguage } from '../contexts/LanguageContext';
+
 
 interface CropAnalysis {
   farmerName: string;
@@ -58,149 +60,7 @@ interface CropAnalysis {
 }
 
 const AgroGuardianAI = () => {
-  // --- TEXTS ---
-  const getText = (key: string) => {
-    const texts: { [key: string]: { [key: string]: string } } = {
-      title: {
-        english: 'AgroGuardian AI',
-        hindi: 'एग्रोगार्डियन AI',
-        gujarati: 'એગ્રોગાર્ડિયન AI'
-      },
-      subtitle: {
-        english: 'AI-Powered Crop Disease Detection',
-        hindi: 'AI-संचालित फसल रोग पहचान',
-        gujarati: 'AI-સંચાલિત પાક રોગ શોધ'
-      },
-      step1Title: {
-        english: 'Upload Image',
-        hindi: 'छवि अपलोड करें',
-        gujarati: 'છબી અપલોડ કરો'
-      },
-      step1Desc: {
-        english: 'Take a photo or upload an image of your crop',
-        hindi: 'अपनी फसल की तस्वीर लें या छवि अपलोड करें',
-        gujarati: 'તમારા પાકની ફોટો લો અથવા છબી અપલોડ કરો'
-      },
-      step2Title: {
-        english: 'AI Analysis',
-        hindi: 'AI विश्लेषण',
-        gujarati: 'AI વિશ્લેષણ'
-      },
-      step2Desc: {
-        english: 'Our AI analyzes the image for diseases and issues',
-        hindi: 'हमारा AI रोगों और समस्याओं के लिए छवि का विश्लेषण करता है',
-        gujarati: 'આપણો AI રોગો અને સમસ્યાઓ માટે છબીનું વિશ્લેષણ કરે છે'
-      },
-      step3Title: {
-        english: 'Get Results',
-        hindi: 'परिणाम प्राप्त करें',
-        gujarati: 'પરિણામ મેળવો'
-      },
-      step3Desc: {
-        english: 'Receive detailed analysis and recommendations',
-        hindi: 'विस्तृत विश्लेषण और सिफारिशें प्राप्त करें',
-        gujarati: 'વિસ્તૃત વિશ્લેષણ અને ભલામણો મેળવો'
-      },
-      step4Title: {
-        english: 'Take Action',
-        hindi: 'कार्रवाई करें',
-        gujarati: 'કાર્યવાહી કરો'
-      },
-      step4Desc: {
-        english: 'Follow recommendations to protect your crops',
-        hindi: 'अपनी फसलों की रक्षा के लिए सिफारिशों का पालन करें',
-        gujarati: 'તમારા પાકોની રક્ષા માટે ભલામણોનું પાલન કરો'
-      },
-      homeNav: {
-        english: 'Home',
-        hindi: 'होम',
-        gujarati: 'હોમ'
-      },
-      aboutNav: {
-        english: 'About',
-        hindi: 'के बारे में',
-        gujarati: 'વિશે'
-      },
-      vendorsNav: {
-        english: 'Vendors',
-        hindi: 'विक्रेता',
-        gujarati: 'વિક્રેતા'
-      },
-      schemesNav: {
-        english: 'Schemes',
-        hindi: 'योजनाएं',
-        gujarati: 'યોજનાઓ'
-      },
-      contactNav: {
-        english: 'Contact',
-        hindi: 'संपर्क',
-        gujarati: 'સંપર્ક'
-      },
-      howToTitle: {
-        english: 'How to Use',
-        hindi: 'कैसे उपयोग करें',
-        gujarati: 'કેવી રીતે વાપરવું'
-      },
-      analysisTitle: {
-        english: 'AI Analysis & Chat',
-        hindi: 'AI विश्लेषण और चैट',
-        gujarati: 'AI વિશ્લેષણ અને ચેટ'
-      },
-      imageSection: {
-        english: 'Image Capture',
-        hindi: 'छवि कैप्चर',
-        gujarati: 'છબી કેપ્ચર'
-      },
-      chatSection: {
-        english: 'AI Chat Support',
-        hindi: 'AI चैट सहायता',
-        gujarati: 'AI ચેટ સહાય'
-      },
-      vendorsTitle: {
-        english: 'Medicine Vendors',
-        hindi: 'दवा विक्रेता',
-        gujarati: 'દવા વિક્રેતા'
-      },
-      schemesTitle: {
-        english: 'Government Schemes',
-        hindi: 'सरकारी योजनाएं',
-        gujarati: 'સરકારી યોજનાઓ'
-      },
-      aboutTitle: {
-        english: 'About Us',
-        hindi: 'हमारे बारे में',
-        gujarati: 'આપણા વિશે'
-      },
-      contactTitle: {
-        english: 'Contact Us',
-        hindi: 'संपर्क करें',
-        gujarati: 'સંપર્ક કરો'
-      },
-      footerDesc: {
-        english: 'Empowering farmers with AI-driven crop disease detection and agricultural support.',
-        hindi: 'AI-संचालित फसल रोग पहचान और कृषि सहायता के साथ किसानों को सशक्त बनाना।',
-        gujarati: 'AI-સંચાલિત પાક રોગ શોધ અને કૃષિ સહાય સાથે ખેડૂતોને સશક્ત બનાવવા।'
-      },
-      footerCopy: {
-        english: '© 2024 AgroGuardian AI. Made with',
-        hindi: '© 2024 एग्रोगार्डियन AI। के साथ बनाया गया',
-        gujarati: '© 2024 એગ્રોગાર્ડિયન AI। સાથે બનાવ્યું'
-      },
-      prevStep: {
-        english: 'Previous',
-        hindi: 'पिछला',
-        gujarati: 'પહેલાનું'
-      },
-      nextStep: {
-        english: 'Next',
-        hindi: 'अगला',
-        gujarati: 'આગળ'
-      }
-    };
-    return texts[key]?.[language] || key;
-  };
-  // --- STATE ---
-  const [language, setLanguage] = useState('english');
+  const { language, setLanguage, getText } = useLanguage();
   const [capturedImage, setCapturedImage] = useState<string | null>(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [chatMessages, setChatMessages] = useState<Array<{type: 'user' | 'bot', content: string}>>([]);
