@@ -702,19 +702,27 @@ const AgroGuardianAI = () => {
           <div className="max-w-6xl mx-auto">
             <div className="flex flex-col md:flex-row justify-between items-stretch gap-8">
               {(() => {
-                // Images relevant to each step
-                const stepImages = [
-                  // Step 1: Farmer uploading/capturing crop image
-                  'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80',
-                  // Step 2: AI/technology analyzing crop
-                  'https://images.unsplash.com/photo-1508672019048-805c876b67e2?auto=format&fit=crop&w=400&q=80',
-                  // Step 3: Farmer checking results on phone
-                  'https://images.unsplash.com/photo-1524594154908-eddffb6a1c93?auto=format&fit=crop&w=400&q=80',
-                  // Step 4: Farmer in field taking action
-                  'https://images.unsplash.com/photo-1465101178521-c1a9136a3b99?auto=format&fit=crop&w=400&q=80',
+                // More detailed descriptions for each step
+                const detailedSteps = [
+                  {
+                    ...steps[0],
+                    desc: 'Step 1: Take a clear photo of your crop using your phone or upload an existing image from your gallery. Ensure the affected area is visible for accurate analysis.'
+                  },
+                  {
+                    ...steps[1],
+                    desc: 'Step 2: Our advanced AI system will automatically analyze the uploaded image to detect any signs of disease, pest, or nutrient deficiency.'
+                  },
+                  {
+                    ...steps[2],
+                    desc: 'Step 3: Instantly receive a detailed report with the diagnosis, severity, and confidence level, along with actionable recommendations tailored to your crop.'
+                  },
+                  {
+                    ...steps[3],
+                    desc: 'Step 4: Follow the provided recommendations and treatment methods to protect and improve your crop health. You can also connect with vendors or access government schemes.'
+                  },
                 ];
                 const [activeStep, setActiveStep] = React.useState(-1);
-                return steps.map((step, idx) => (
+                return detailedSteps.map((step, idx) => (
                   <div
                     key={idx}
                     className={`flex-1 bg-white rounded-3xl shadow-2xl p-8 flex flex-col items-center text-center cursor-pointer transition-all relative group ${activeStep === idx ? 'ring-4 ring-primary scale-105 z-10' : ''}`}
@@ -722,19 +730,14 @@ const AgroGuardianAI = () => {
                     onMouseEnter={() => setActiveStep(idx)}
                     onMouseLeave={() => setActiveStep(-1)}
                   >
-                    <div className="relative mb-6 w-32 h-32">
-                      <img
-                        src={stepImages[idx]}
-                        alt={step.title}
-                        className={`w-32 h-32 object-cover rounded-xl transition-transform duration-300 ${activeStep === idx ? 'scale-110 brightness-90' : ''}`}
-                      />
+                    <div className="relative mb-6 w-20 h-20 flex items-center justify-center">
+                      <div className={`text-5xl transition-colors duration-200 ${activeStep === idx ? 'text-primary' : ''}`}>{step.icon}</div>
                       {activeStep === idx && (
-                        <div className="absolute inset-0 flex items-center justify-center bg-primary/80 rounded-xl">
-                          <span className="text-white text-5xl font-extrabold">{idx + 1}</span>
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <span className="text-primary text-5xl font-extrabold bg-white/90 rounded-full px-5 py-2 shadow-lg border-2 border-primary">{idx + 1}</span>
                         </div>
                       )}
                     </div>
-                    <div className={`text-4xl mb-2 transition-colors duration-200 ${activeStep === idx ? 'text-primary' : ''}`}>{step.icon}</div>
                     <h4 className={`text-2xl font-bold mb-4 transition-colors duration-200 ${activeStep === idx ? 'text-primary' : 'text-primary'}`}>{step.title}</h4>
                     <p className="text-base text-muted-foreground mb-2">{step.desc}</p>
                   </div>
