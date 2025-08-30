@@ -574,6 +574,7 @@ const AgroGuardianAI = () => {
                     onClick={() => setActiveStep(idx)}
                     onMouseEnter={() => setActiveStep(idx)}
                     onMouseLeave={() => setActiveStep(-1)}
+                    style={{ minWidth: 0 }}
                   >
                     <div className="relative mb-6 w-20 h-20 flex items-center justify-center">
                       <div className={`text-5xl transition-colors duration-200 ${activeStep === idx ? 'text-primary' : ''}`}>{step.icon}</div>
@@ -583,8 +584,8 @@ const AgroGuardianAI = () => {
                         </div>
                       )}
                     </div>
-                    <h4 className={`text-2xl font-bold mb-4 transition-colors duration-200 ${activeStep === idx ? 'text-primary' : 'text-primary'}`}>{step.title}</h4>
-                    <p className="text-base text-muted-foreground mb-2">{step.desc}</p>
+                    <h4 className={`text-2xl font-bold mb-3 transition-colors duration-200 ${activeStep === idx ? 'text-primary' : 'text-primary'}`}>{step.title}</h4>
+                    <p className="text-base text-muted-foreground mb-0 leading-relaxed text-justify" style={{fontWeight: 400, marginTop: 0, marginBottom: 0, padding: '0 0.5rem', minHeight: '72px', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>{step.desc}</p>
                   </div>
                 ));
               })()}
