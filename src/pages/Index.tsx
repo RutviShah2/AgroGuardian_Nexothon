@@ -596,7 +596,7 @@ const AgroGuardianAI = () => {
         <div className="container mx-auto px-4 py-4">
           <div className="flex justify-between items-center">
             <div className="flex items-center space-x-3">
-              <div className="bg-primary p-2 rounded-full hover-scale">
+              <div className="bg-primary p-2 rounded-full">
                 <Leaf className="h-8 w-8 text-primary-foreground float-animation" />
               </div>
               <div>
@@ -610,7 +610,7 @@ const AgroGuardianAI = () => {
                 <button 
                   key={nav}
                   onClick={() => scrollToSection(['home', 'about', 'vendors', 'schemes', 'contact'][idx])} 
-                  className="text-primary hover:text-primary/80 font-medium transition-colors hover-lift"
+                  className="text-primary font-medium transition-colors"
                 >
                   {getText(nav)}
                 </button>
@@ -620,7 +620,7 @@ const AgroGuardianAI = () => {
             <select 
               value={language} 
               onChange={(e) => setLanguage(e.target.value as any)}
-              className="bg-accent border-border text-foreground rounded-lg px-3 py-2 focus:ring-2 focus:ring-primary hover-scale"
+              className="bg-accent border-border text-foreground rounded-lg px-3 py-2 focus:ring-2 focus:ring-primary"
             >
               <option value="english">English</option>
               <option value="hindi">हिंदी</option>
@@ -658,15 +658,15 @@ const AgroGuardianAI = () => {
           
           {/* Statistics */}
           <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto mb-12">
-            <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 hover-lift">
+            <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
               <div className="text-4xl font-bold mb-2">35%</div>
               <div className="text-green-200">{getText('cropLossReduction')}</div>
             </div>
-            <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 hover-lift">
+            <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
               <div className="text-4xl font-bold mb-2">50%</div>
               <div className="text-green-200">{getText('chemicalReduction')}</div>
             </div>
-            <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 hover-lift">
+            <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
               <div className="text-4xl font-bold mb-2">25%</div>
               <div className="text-green-200">{getText('incomeIncrease')}</div>
             </div>
@@ -674,7 +674,7 @@ const AgroGuardianAI = () => {
           
           <button 
             onClick={() => scrollToSection('howto')}
-            className="bg-white text-primary px-8 py-4 rounded-full font-bold text-lg hover:bg-green-50 transition-all transform hover:scale-105 shadow-xl hover-lift"
+            className="bg-white text-primary px-8 py-4 rounded-full font-bold text-lg transition-all transform shadow-xl"
           >
             Get Started <ChevronRight className="inline h-5 w-5 ml-2" />
           </button>
@@ -701,7 +701,7 @@ const AgroGuardianAI = () => {
           <h2 className="text-4xl font-bold text-center text-primary mb-16 fade-in">{getText('howToTitle')}</h2>
           
           <div className="max-w-4xl mx-auto">
-            <div className="bg-white rounded-3xl shadow-2xl overflow-hidden hover-lift">
+            <div className="bg-white rounded-3xl shadow-2xl overflow-hidden">
               <div className="bg-gradient-to-r from-primary to-green-600 text-white p-8">
                 <div className="flex items-center justify-between">
                   <h3 className="text-2xl font-bold">Step {currentStep + 1} of {steps.length}</h3>
@@ -725,7 +725,7 @@ const AgroGuardianAI = () => {
                   <button 
                     onClick={() => setCurrentStep(Math.max(0, currentStep - 1))}
                     disabled={currentStep === 0}
-                    className="bg-secondary text-secondary-foreground px-6 py-3 rounded-xl font-medium disabled:opacity-50 hover:bg-secondary/80 transition-colors hover-scale"
+                    className="bg-secondary text-secondary-foreground px-6 py-3 rounded-xl font-medium disabled:opacity-50 transition-colors"
                   >
                     {getText('prevStep')}
                   </button>
@@ -735,7 +735,7 @@ const AgroGuardianAI = () => {
                       <button
                         key={idx}
                         onClick={() => setCurrentStep(idx)}
-                        className={`w-3 h-3 rounded-full transition-colors hover-scale ${
+                        className={`w-3 h-3 rounded-full transition-colors ${
                           idx === currentStep ? 'bg-primary' : 'bg-muted'
                         }`}
                       />
@@ -745,7 +745,7 @@ const AgroGuardianAI = () => {
                   <button 
                     onClick={() => setCurrentStep(Math.min(steps.length - 1, currentStep + 1))}
                     disabled={currentStep === steps.length - 1}
-                    className="bg-primary text-primary-foreground px-6 py-3 rounded-xl font-medium disabled:opacity-50 hover:bg-primary/90 transition-colors hover-scale"
+                    className="bg-primary text-primary-foreground px-6 py-3 rounded-xl font-medium disabled:opacity-50 transition-colors"
                   >
                     {getText('nextStep')}
                   </button>
@@ -763,7 +763,7 @@ const AgroGuardianAI = () => {
           
           <div className="grid lg:grid-cols-2 gap-8 max-w-7xl mx-auto">
             {/* Image Capture Section */}
-            <div className="bg-card rounded-3xl shadow-xl p-8 border border-border hover-lift">
+            <div className="bg-card rounded-3xl shadow-xl p-8 border border-border">
               <h3 className="text-2xl font-bold text-card-foreground mb-8 flex items-center">
                 <Camera className="h-8 w-8 mr-3 text-primary" />
                 {getText('imageSection')}
@@ -809,7 +809,7 @@ const AgroGuardianAI = () => {
                   {!isCameraActive ? (
                     <button
                       onClick={startCamera}
-                      className="bg-primary text-primary-foreground px-6 py-4 rounded-xl hover:bg-primary/90 transition-colors flex items-center justify-center space-x-2 font-medium hover-scale"
+                      className="bg-primary text-primary-foreground px-6 py-4 rounded-xl transition-colors flex items-center justify-center space-x-2 font-medium"
                     >
                       <Camera className="h-5 w-5" />
                       <span>{getText('captureBtn')}</span>
@@ -817,7 +817,7 @@ const AgroGuardianAI = () => {
                   ) : (
                     <button
                       onClick={capturePhoto}
-                      className="bg-green-700 text-white px-6 py-4 rounded-xl hover:bg-green-800 transition-colors flex items-center justify-center space-x-2 font-medium hover-scale"
+                      className="bg-green-700 text-white px-6 py-4 rounded-xl transition-colors flex items-center justify-center space-x-2 font-medium"
                     >
                       <Camera className="h-5 w-5" />
                       <span>Capture Now</span>
@@ -834,7 +834,7 @@ const AgroGuardianAI = () => {
                   
                   <button
                     onClick={() => fileInputRef.current?.click()}
-                    className="bg-secondary text-secondary-foreground px-6 py-4 rounded-xl hover:bg-secondary/80 transition-colors flex items-center justify-center space-x-2 font-medium hover-scale"
+                    className="bg-secondary text-secondary-foreground px-6 py-4 rounded-xl transition-colors flex items-center justify-center space-x-2 font-medium"
                   >
                     <Upload className="h-5 w-5" />
                     <span>{getText('uploadBtn')}</span>
@@ -844,7 +844,7 @@ const AgroGuardianAI = () => {
             </div>
 
             {/* Chat Section */}
-            <div className="bg-card rounded-3xl shadow-xl p-8 border border-border hover-lift">
+            <div className="bg-card rounded-3xl shadow-xl p-8 border border-border">
               <h3 className="text-2xl font-bold text-card-foreground mb-8 flex items-center">
                 <Bot className="h-8 w-8 mr-3 text-primary" />
                 {getText('chatSection')}
@@ -884,12 +884,12 @@ const AgroGuardianAI = () => {
                     onChange={(e) => setUserMessage(e.target.value)}
                     onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
                     placeholder={getText('placeholder')}
-                    className="flex-1 border-2 border-border rounded-xl px-4 py-3 focus:ring-2 focus:ring-primary focus:border-primary bg-background text-sm hover-scale"
+                    className="flex-1 border-2 border-border rounded-xl px-4 py-3 focus:ring-2 focus:ring-primary focus:border-primary bg-background text-sm"
                   />
                   <button
                     onClick={sendMessage}
                     disabled={!userMessage.trim()}
-                    className="bg-primary text-primary-foreground px-4 py-3 rounded-xl hover:bg-primary/90 transition-colors disabled:opacity-50 hover-scale"
+                    className="bg-primary text-primary-foreground px-4 py-3 rounded-xl transition-colors disabled:opacity-50"
                   >
                     <Send className="h-5 w-5" />
                   </button>
@@ -970,7 +970,7 @@ const AgroGuardianAI = () => {
                     </p>
                     <button
                       onClick={() => setShowOtpForm(true)}
-                      className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold transition-colors duration-200 flex items-center mx-auto hover-scale"
+                      className="bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold transition-colors duration-200 flex items-center mx-auto"
                     >
                       <Shield className="h-5 w-5 mr-2" />
                       Request Download
@@ -1011,14 +1011,14 @@ const AgroGuardianAI = () => {
                       <div className="flex space-x-3">
                         <button
                           onClick={() => setShowOtpForm(false)}
-                          className="flex-1 bg-gray-300 hover:bg-gray-400 text-gray-700 px-4 py-2 rounded-lg font-medium transition-colors"
+                          className="flex-1 bg-gray-300 text-gray-700 px-4 py-2 rounded-lg font-medium transition-colors"
                         >
                           Cancel
                         </button>
                         <button
                           onClick={handleOtpVerification}
                           disabled={otpInput.length !== 6}
-                          className="flex-1 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-300 text-white px-4 py-2 rounded-lg font-medium transition-colors"
+                          className="flex-1 bg-blue-600 disabled:bg-blue-300 text-white px-4 py-2 rounded-lg font-medium transition-colors"
                         >
                           Verify OTP
                         </button>
@@ -1038,7 +1038,7 @@ const AgroGuardianAI = () => {
                     <button
                       onClick={generatePDF}
                       disabled={isGenerating}
-                      className="bg-green-600 hover:bg-green-700 disabled:bg-green-400 text-white px-8 py-3 rounded-lg font-semibold transition-colors duration-200 flex items-center mx-auto hover-scale"
+                      className="bg-green-600 disabled:bg-green-400 text-white px-8 py-3 rounded-lg font-semibold transition-colors duration-200 flex items-center mx-auto"
                     >
                       {isGenerating ? (
                         <>
@@ -1088,7 +1088,7 @@ const AgroGuardianAI = () => {
               { name: "Coromandel International", medicine: "Nutrition & Protection", rating: 4.8, contact: "+91-9876543214", location: "Secunderabad, Telangana" },
               { name: "Dhanuka Agritech", medicine: "Specialty Chemicals", rating: 4.5, contact: "+91-9876543215", location: "New Delhi, India" }
             ].map((vendor, idx) => (
-              <div key={idx} className="bg-card rounded-2xl shadow-lg p-6 border border-border hover-lift">
+              <div key={idx} className="bg-card rounded-2xl shadow-lg p-6 border border-border">
                 <div className="flex items-center justify-between mb-4">
                   <Stethoscope className="h-8 w-8 text-primary" />
                   <div className="flex items-center space-x-1">
@@ -1109,7 +1109,7 @@ const AgroGuardianAI = () => {
                   <Phone className="h-4 w-4 mr-2" />
                   {vendor.contact}
                 </p>
-                <button className="w-full bg-primary text-primary-foreground py-2 px-4 rounded-lg hover:bg-primary/90 transition-colors font-medium hover-scale">
+                <button className="w-full bg-primary text-primary-foreground py-2 px-4 rounded-lg transition-colors font-medium">
                   Contact Vendor
                 </button>
               </div>
@@ -1132,7 +1132,7 @@ const AgroGuardianAI = () => {
               { name: "e-NAM Online Market", desc: "Digital platform to sell crops at better prices", link: "https://enam.gov.in/" },
               { name: "Gujarat Agriculture Portal", desc: "State specific agricultural schemes and benefits", link: "https://agri.gujarat.gov.in/" }
             ].map((scheme, idx) => (
-              <div key={idx} className={`bg-card rounded-2xl shadow-lg p-6 border-l-4 hover-lift ${
+              <div key={idx} className={`bg-card rounded-2xl shadow-lg p-6 border-l-4 ${
                 ['border-green-500', 'border-green-600', 'border-green-700', 'border-green-800', 'border-green-400', 'border-green-300'][idx]
               }`}>
                 <div className="flex items-start justify-between mb-4">
@@ -1145,7 +1145,7 @@ const AgroGuardianAI = () => {
                   href={scheme.link} 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="bg-primary text-primary-foreground px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors text-sm font-medium inline-flex items-center space-x-2 hover-scale"
+                  className="bg-primary text-primary-foreground px-4 py-2 rounded-lg transition-colors text-sm font-medium inline-flex items-center space-x-2"
                 >
                   <span>Learn More</span>
                   <ChevronRight className="h-4 w-4" />
@@ -1162,7 +1162,7 @@ const AgroGuardianAI = () => {
           <h2 className="text-4xl font-bold text-center text-primary mb-16 fade-in">{getText('aboutTitle')}</h2>
           
           <div className="grid md:grid-cols-3 gap-12 max-w-6xl mx-auto">
-            <div className="text-center hover-lift">
+            <div className="text-center">
               <div className="bg-primary/10 p-6 rounded-full w-24 h-24 mx-auto mb-6 flex items-center justify-center">
                 <Leaf className="h-12 w-12 text-primary float-animation" />
               </div>
@@ -1170,7 +1170,7 @@ const AgroGuardianAI = () => {
               <p className="text-muted-foreground leading-relaxed">Precise crop disease identification through advanced machine learning technology and computer vision algorithms.</p>
             </div>
             
-            <div className="text-center hover-lift">
+            <div className="text-center">
               <div className="bg-primary/10 p-6 rounded-full w-24 h-24 mx-auto mb-6 flex items-center justify-center">
                 <Users className="h-12 w-12 text-primary float-animation" style={{ animationDelay: '1s' }} />
               </div>
@@ -1178,7 +1178,7 @@ const AgroGuardianAI = () => {
               <p className="text-muted-foreground leading-relaxed">Simplified interface designed specifically for farmers with multilingual support and intuitive navigation.</p>
             </div>
             
-            <div className="text-center hover-lift">
+            <div className="text-center">
               <div className="bg-primary/10 p-6 rounded-full w-24 h-24 mx-auto mb-6 flex items-center justify-center">
                 <MessageCircle className="h-12 w-12 text-primary float-animation" style={{ animationDelay: '2s' }} />
               </div>
@@ -1195,7 +1195,7 @@ const AgroGuardianAI = () => {
           <h2 className="text-4xl font-bold text-center text-primary mb-16 fade-in">{getText('contactTitle')}</h2>
           
           <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-            <div className="text-center p-8 bg-card rounded-2xl shadow-lg border border-border hover-lift">
+            <div className="text-center p-8 bg-card rounded-2xl shadow-lg border border-border">
               <div className="bg-primary/10 p-4 rounded-full w-16 h-16 mx-auto mb-6 flex items-center justify-center">
                 <Phone className="h-8 w-8 text-primary" />
               </div>
@@ -1204,7 +1204,7 @@ const AgroGuardianAI = () => {
               <p className="text-sm text-muted-foreground">Available 24/7</p>
             </div>
             
-            <div className="text-center p-8 bg-card rounded-2xl shadow-lg border border-border hover-lift">
+            <div className="text-center p-8 bg-card rounded-2xl shadow-lg border border-border">
               <div className="bg-primary/10 p-4 rounded-full w-16 h-16 mx-auto mb-6 flex items-center justify-center">
                 <Mail className="h-8 w-8 text-primary" />
               </div>
@@ -1213,7 +1213,7 @@ const AgroGuardianAI = () => {
               <p className="text-sm text-muted-foreground">Response within 24hrs</p>
             </div>
             
-            <div className="text-center p-8 bg-card rounded-2xl shadow-lg border border-border hover-lift">
+            <div className="text-center p-8 bg-card rounded-2xl shadow-lg border border-border">
               <div className="bg-primary/10 p-4 rounded-full w-16 h-16 mx-auto mb-6 flex items-center justify-center">
                 <MapPin className="h-8 w-8 text-primary" />
               </div>
