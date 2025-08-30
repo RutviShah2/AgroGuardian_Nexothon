@@ -1,0 +1,45 @@
+/* Animations for visual appeal, no content or logic changes */
+@keyframes fadein {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: none; }
+}
+.animate-fadein {
+  animation: fadein 1s cubic-bezier(0.4,0,0.2,1) both;
+}
+.animate-fadein-slow {
+  animation: fadein 1.5s cubic-bezier(0.4,0,0.2,1) both;
+}
+@keyframes slidein-down {
+  from { opacity: 0; transform: translateY(-40px); }
+  to { opacity: 1; transform: none; }
+}
+.animate-slidein-down {
+  animation: slidein-down 1s cubic-bezier(0.4,0,0.2,1) both;
+}
+@keyframes slidein-right {
+  from { opacity: 0; transform: translateX(40px); }
+  to { opacity: 1; transform: none; }
+}
+.animate-slidein-right {
+  animation: slidein-right 1s cubic-bezier(0.4,0,0.2,1) both;
+}
+@keyframes bounce-once {
+  0% { transform: scale(1); }
+  30% { transform: scale(1.12); }
+  60% { transform: scale(0.96); }
+  100% { transform: scale(1); }
+}
+.animate-bounce-once {
+  animation: bounce-once 0.7s 1;
+}
+@keyframes wiggle {
+  0% { transform: rotate(0deg); }
+  20% { transform: rotate(-10deg); }
+  40% { transform: rotate(10deg); }
+  60% { transform: rotate(-6deg); }
+  80% { transform: rotate(6deg); }
+  100% { transform: rotate(0deg); }
+}
+.animate-wiggle {
+  animation: wiggle 0.7s 1;
+}

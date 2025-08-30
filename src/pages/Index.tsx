@@ -1,34 +1,36 @@
+import '../AppAnimations.css';
 import React, { useState, useRef, useEffect } from 'react';
 import { 
   Camera, 
   MessageCircle, 
   Leaf, 
-  Users, 
+  Users,
   Phone, 
-  Mail, 
   MapPin, 
   Upload, 
-  Send, 
   Bot, 
   User,
-  Shield,
   Award,
   TrendingUp,
-  ChevronRight,
   Heart,
   Star,
   Stethoscope,
   Package,
   Sun,
+  FileText,
+  CheckCircle,
+  Calendar,
+  ChevronRight,
   Cloud,
   Droplets,
   Sprout,
+  Send,
   Download,
-  FileText,
-  CheckCircle,
+  Shield,
   AlertCircle,
-  Calendar
+  Mail
 } from 'lucide-react';
+
 
 interface CropAnalysis {
   farmerName: string;
@@ -55,24 +57,8 @@ interface CropAnalysis {
   imageUrl?: string;
 }
 
-
 const AgroGuardianAI = () => {
-  const [language, setLanguage] = useState('english');
-  const [capturedImage, setCapturedImage] = useState<string | null>(null);
-  const [isAnalyzing, setIsAnalyzing] = useState(false);
-  const [chatMessages, setChatMessages] = useState<Array<{type: 'user' | 'bot', content: string}>>([]);
-  const [userMessage, setUserMessage] = useState('');
-  const [isCameraActive, setIsCameraActive] = useState(false);
-  const [currentStep, setCurrentStep] = useState(0);
-  const [otpInput, setOtpInput] = useState('');
-  const [isOtpVerified, setIsOtpVerified] = useState(false);
-  const [showOtpForm, setShowOtpForm] = useState(false);
-  const [isGenerating, setIsGenerating] = useState(false);
-  const [downloadError, setDownloadError] = useState('');
-  const fileInputRef = useRef<HTMLInputElement>(null);
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-
+  // --- TEXTS ---
   const getText = (key: string) => {
     const texts: { [key: string]: { [key: string]: string } } = {
       title: {
@@ -213,6 +199,24 @@ const AgroGuardianAI = () => {
     };
     return texts[key]?.[language] || key;
   };
+  // --- STATE ---
+  const [language, setLanguage] = useState('english');
+  const [capturedImage, setCapturedImage] = useState<string | null>(null);
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [chatMessages, setChatMessages] = useState<Array<{type: 'user' | 'bot', content: string}>>([]);
+  const [userMessage, setUserMessage] = useState('');
+  const [isCameraActive, setIsCameraActive] = useState(false);
+  const [currentStep, setCurrentStep] = useState(0);
+  const [otpInput, setOtpInput] = useState('');
+  const [isOtpVerified, setIsOtpVerified] = useState(false);
+  const [showOtpForm, setShowOtpForm] = useState(false);
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [downloadError, setDownloadError] = useState('');
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  // ...existing code...
 
   // Sample crop analysis data
   const cropAnalysis: CropAnalysis = {
