@@ -701,34 +701,45 @@ const AgroGuardianAI = () => {
           <h2 className="text-4xl font-bold text-center text-primary mb-16 fade-in">{getText('howToTitle')}</h2>
           <div className="max-w-6xl mx-auto">
             <div className="flex flex-col md:flex-row justify-between items-stretch gap-8">
-              {/* Step 1 */}
-              <div className="flex-1 bg-white rounded-3xl shadow-2xl p-8 flex flex-col items-center text-center">
-                <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80" alt="Upload Crop" className="w-32 h-32 object-cover rounded-xl mb-6" />
-                <div className="text-4xl mb-2">🌍</div>
-                <h4 className="text-2xl font-bold text-primary mb-4">{steps[0].title}</h4>
-                <p className="text-base text-muted-foreground mb-2">{steps[0].desc}</p>
-              </div>
-              {/* Step 2 */}
-              <div className="flex-1 bg-white rounded-3xl shadow-2xl p-8 flex flex-col items-center text-center">
-                <img src="https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=400&q=80" alt="AI Analysis" className="w-32 h-32 object-cover rounded-xl mb-6" />
-                <div className="text-4xl mb-2">📱</div>
-                <h4 className="text-2xl font-bold text-primary mb-4">{steps[1].title}</h4>
-                <p className="text-base text-muted-foreground mb-2">{steps[1].desc}</p>
-              </div>
-              {/* Step 3 */}
-              <div className="flex-1 bg-white rounded-3xl shadow-2xl p-8 flex flex-col items-center text-center">
-                <img src="https://images.unsplash.com/photo-1501876725168-00c445821c9e?auto=format&fit=crop&w=400&q=80" alt="Get Results" className="w-32 h-32 object-cover rounded-xl mb-6" />
-                <div className="text-4xl mb-2">🤖</div>
-                <h4 className="text-2xl font-bold text-primary mb-4">{steps[2].title}</h4>
-                <p className="text-base text-muted-foreground mb-2">{steps[2].desc}</p>
-              </div>
-              {/* Step 4 */}
-              <div className="flex-1 bg-white rounded-3xl shadow-2xl p-8 flex flex-col items-center text-center">
-                <img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80" alt="Take Action" className="w-32 h-32 object-cover rounded-xl mb-6" />
-                <div className="text-4xl mb-2">💬</div>
-                <h4 className="text-2xl font-bold text-primary mb-4">{steps[3].title}</h4>
-                <p className="text-base text-muted-foreground mb-2">{steps[3].desc}</p>
-              </div>
+              {(() => {
+                // Images relevant to each step
+                const stepImages = [
+                  // Step 1: Farmer uploading/capturing crop image
+                  'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80',
+                  // Step 2: AI/technology analyzing crop
+                  'https://images.unsplash.com/photo-1508672019048-805c876b67e2?auto=format&fit=crop&w=400&q=80',
+                  // Step 3: Farmer checking results on phone
+                  'https://images.unsplash.com/photo-1524594154908-eddffb6a1c93?auto=format&fit=crop&w=400&q=80',
+                  // Step 4: Farmer in field taking action
+                  'https://images.unsplash.com/photo-1465101178521-c1a9136a3b99?auto=format&fit=crop&w=400&q=80',
+                ];
+                const [activeStep, setActiveStep] = React.useState(-1);
+                return steps.map((step, idx) => (
+                  <div
+                    key={idx}
+                    className={`flex-1 bg-white rounded-3xl shadow-2xl p-8 flex flex-col items-center text-center cursor-pointer transition-all relative group ${activeStep === idx ? 'ring-4 ring-primary scale-105 z-10' : ''}`}
+                    onClick={() => setActiveStep(idx)}
+                    onMouseEnter={() => setActiveStep(idx)}
+                    onMouseLeave={() => setActiveStep(-1)}
+                  >
+                    <div className="relative mb-6 w-32 h-32">
+                      <img
+                        src={stepImages[idx]}
+                        alt={step.title}
+                        className={`w-32 h-32 object-cover rounded-xl transition-transform duration-300 ${activeStep === idx ? 'scale-110 brightness-90' : ''}`}
+                      />
+                      {activeStep === idx && (
+                        <div className="absolute inset-0 flex items-center justify-center bg-primary/80 rounded-xl">
+                          <span className="text-white text-5xl font-extrabold">{idx + 1}</span>
+                        </div>
+                      )}
+                    </div>
+                    <div className={`text-4xl mb-2 transition-colors duration-200 ${activeStep === idx ? 'text-primary' : ''}`}>{step.icon}</div>
+                    <h4 className={`text-2xl font-bold mb-4 transition-colors duration-200 ${activeStep === idx ? 'text-primary' : 'text-primary'}`}>{step.title}</h4>
+                    <p className="text-base text-muted-foreground mb-2">{step.desc}</p>
+                  </div>
+                ));
+              })()}
             </div>
           </div>
         </div>
