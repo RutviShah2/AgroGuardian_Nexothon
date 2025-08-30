@@ -24,32 +24,160 @@ import {
   Droplets,
   Sprout
 } from 'lucide-react';
-import { useLanguage } from '../contexts/LanguageContext';
-import { AIService, CropAnalysis } from '../services/AIService';
+
 
 const AgroGuardianAI = () => {
-  const { language, setLanguage, getText } = useLanguage();
+  const [language, setLanguage] = useState('english');
   const [capturedImage, setCapturedImage] = useState<string | null>(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [chatMessages, setChatMessages] = useState<Array<{type: 'user' | 'bot', content: string}>>([]);
   const [userMessage, setUserMessage] = useState('');
   const [isCameraActive, setIsCameraActive] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
-  const [cropAnalysis, setCropAnalysis] = useState<CropAnalysis | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
-  // Add greeting message on component mount
-  useEffect(() => {
-    if (chatMessages.length === 0) {
-      const greetingMessage = {
-        type: 'bot' as const,
-        content: AIService.getGreeting(language)
-      };
-      setChatMessages([greetingMessage]);
-    }
-  }, [language, chatMessages.length]);
+  const getText = (key: string) => {
+    const texts: { [key: string]: { [key: string]: string } } = {
+      title: {
+        english: 'AgroGuardian AI',
+        hindi: 'एग्रोगार्डियन AI',
+        gujarati: 'એગ્રોગાર્ડિયન AI'
+      },
+      subtitle: {
+        english: 'AI-Powered Crop Disease Detection',
+        hindi: 'AI-संचालित फसल रोग पहचान',
+        gujarati: 'AI-સંચાલિત પાક રોગ શોધ'
+      },
+      step1Title: {
+        english: 'Upload Image',
+        hindi: 'छवि अपलोड करें',
+        gujarati: 'છબી અપલોડ કરો'
+      },
+      step1Desc: {
+        english: 'Take a photo or upload an image of your crop',
+        hindi: 'अपनी फसल की तस्वीर लें या छवि अपलोड करें',
+        gujarati: 'તમારા પાકની ફોટો લો અથવા છબી અપલોડ કરો'
+      },
+      step2Title: {
+        english: 'AI Analysis',
+        hindi: 'AI विश्लेषण',
+        gujarati: 'AI વિશ્લેષણ'
+      },
+      step2Desc: {
+        english: 'Our AI analyzes the image for diseases and issues',
+        hindi: 'हमारा AI रोगों और समस्याओं के लिए छवि का विश्लेषण करता है',
+        gujarati: 'આપણો AI રોગો અને સમસ્યાઓ માટે છબીનું વિશ્લેષણ કરે છે'
+      },
+      step3Title: {
+        english: 'Get Results',
+        hindi: 'परिणाम प्राप्त करें',
+        gujarati: 'પરિણામ મેળવો'
+      },
+      step3Desc: {
+        english: 'Receive detailed analysis and recommendations',
+        hindi: 'विस्तृत विश्लेषण और सिफारिशें प्राप्त करें',
+        gujarati: 'વિસ્તૃત વિશ્લેષણ અને ભલામણો મેળવો'
+      },
+      step4Title: {
+        english: 'Take Action',
+        hindi: 'कार्रवाई करें',
+        gujarati: 'કાર્યવાહી કરો'
+      },
+      step4Desc: {
+        english: 'Follow recommendations to protect your crops',
+        hindi: 'अपनी फसलों की रक्षा के लिए सिफारिशों का पालन करें',
+        gujarati: 'તમારા પાકોની રક્ષા માટે ભલામણોનું પાલન કરો'
+      },
+      homeNav: {
+        english: 'Home',
+        hindi: 'होम',
+        gujarati: 'હોમ'
+      },
+      aboutNav: {
+        english: 'About',
+        hindi: 'के बारे में',
+        gujarati: 'વિશે'
+      },
+      vendorsNav: {
+        english: 'Vendors',
+        hindi: 'विक्रेता',
+        gujarati: 'વિક્રેતા'
+      },
+      schemesNav: {
+        english: 'Schemes',
+        hindi: 'योजनाएं',
+        gujarati: 'યોજનાઓ'
+      },
+      contactNav: {
+        english: 'Contact',
+        hindi: 'संपर्क',
+        gujarati: 'સંપર્ક'
+      },
+      howToTitle: {
+        english: 'How to Use',
+        hindi: 'कैसे उपयोग करें',
+        gujarati: 'કેવી રીતે વાપરવું'
+      },
+      analysisTitle: {
+        english: 'AI Analysis & Chat',
+        hindi: 'AI विश्लेषण और चैट',
+        gujarati: 'AI વિશ્લેષણ અને ચેટ'
+      },
+      imageSection: {
+        english: 'Image Capture',
+        hindi: 'छवि कैप्चर',
+        gujarati: 'છબી કેપ્ચર'
+      },
+      chatSection: {
+        english: 'AI Chat Support',
+        hindi: 'AI चैट सहायता',
+        gujarati: 'AI ચેટ સહાય'
+      },
+      vendorsTitle: {
+        english: 'Medicine Vendors',
+        hindi: 'दवा विक्रेता',
+        gujarati: 'દવા વિક્રેતા'
+      },
+      schemesTitle: {
+        english: 'Government Schemes',
+        hindi: 'सरकारी योजनाएं',
+        gujarati: 'સરકારી યોજનાઓ'
+      },
+      aboutTitle: {
+        english: 'About Us',
+        hindi: 'हमारे बारे में',
+        gujarati: 'આપણા વિશે'
+      },
+      contactTitle: {
+        english: 'Contact Us',
+        hindi: 'संपर्क करें',
+        gujarati: 'સંપર્ક કરો'
+      },
+      footerDesc: {
+        english: 'Empowering farmers with AI-driven crop disease detection and agricultural support.',
+        hindi: 'AI-संचालित फसल रोग पहचान और कृषि सहायता के साथ किसानों को सशक्त बनाना।',
+        gujarati: 'AI-સંચાલિત પાક રોગ શોધ અને કૃષિ સહાય સાથે ખેડૂતોને સશક્ત બનાવવા।'
+      },
+      footerCopy: {
+        english: '© 2024 AgroGuardian AI. Made with',
+        hindi: '© 2024 एग्रोगार्डियन AI। के साथ बनाया गया',
+        gujarati: '© 2024 એગ્રોગાર્ડિયન AI। સાથે બનાવ્યું'
+      },
+      prevStep: {
+        english: 'Previous',
+        hindi: 'पिछला',
+        gujarati: 'પહેલાનું'
+      },
+      nextStep: {
+        english: 'Next',
+        hindi: 'अगला',
+        gujarati: 'આગળ'
+      }
+    };
+    return texts[key]?.[language] || key;
+  };
 
   const steps = [
     {
@@ -138,26 +266,34 @@ const AgroGuardianAI = () => {
     setIsAnalyzing(true);
     
     try {
-      const analysis = await AIService.analyzeCrop(imageUrl, language);
-      setCropAnalysis(analysis);
+      // Simulate AI analysis
+      await new Promise(resolve => setTimeout(resolve, 2000));
       
-      // Format the analysis response
-      const response = `${getText('aiCropAnalysis')}
+      const response = `🌱 Analysis Complete!
 
-🌾 ${getText('crop')}: ${analysis.crop}
-🔍 ${getText('condition')}: ${analysis.condition}
-⚠️ ${getText('severity')}: ${analysis.severity}
-🎯 ${getText('confidence')}: ${analysis.confidence}%
+🌾 Crop: Wheat
+🔍 Condition: Early Blight Disease
+⚠️ Severity: Moderate
+🎯 Confidence: 95%
 
-${analysis.symptoms.length > 0 ? `🔬 ${getText('symptoms')}:\n${analysis.symptoms.map(s => `• ${s}`).join('\n')}\n` : ''}
+🔬 Symptoms:
+• Yellow spots on leaves
+• Wilting stems
+• Brown patches
 
-💡 ${getText('recommendations')}:
-${analysis.recommendations.map(r => `• ${r}`).join('\n')}
+💡 Recommendations:
+• Apply fungicide treatment
+• Improve soil drainage
+• Monitor plant health regularly
 
-${analysis.immediateActions.length > 0 ? `⚡ ${getText('immediateActions')}:\n${analysis.immediateActions.map(a => `• ${a}`).join('\n')}\n` : ''}
+⚡ Immediate Actions:
+• Remove affected leaves
+• Isolate infected plants
 
-🌱 ${getText('nutritionAdvice')}:
-${analysis.nutritionAdvice.map(n => `• ${n}`).join('\n')}`;
+🌱 Nutrition Advice:
+• Increase potassium levels
+• Maintain proper pH balance
+• Use organic fertilizers`;
       
       const botMessage = {
         type: 'bot' as const,
@@ -168,7 +304,7 @@ ${analysis.nutritionAdvice.map(n => `• ${n}`).join('\n')}`;
     } catch (error) {
       const errorMessage = {
         type: 'bot' as const,
-        content: getText('analysisError') || 'Sorry, there was an error analyzing your crop. Please try again.'
+        content: 'Sorry, there was an error analyzing your crop. Please try again.'
       };
       setChatMessages(prev => [...prev, errorMessage]);
     } finally {
@@ -184,7 +320,18 @@ ${analysis.nutritionAdvice.map(n => `• ${n}`).join('\n')}`;
       setUserMessage('');
       
       try {
-        const response = await AIService.getChatResponse(currentMessage, language);
+        // Simulate AI chat response
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        
+        const responses = [
+          "I can help you with crop management! What specific issue are you facing?",
+          "Based on your question, I recommend checking soil moisture levels first.",
+          "This sounds like a common issue. Let me provide some solutions for you.",
+          "I'd be happy to help with your agricultural concerns. Can you provide more details?",
+          "For this type of problem, I suggest consulting with a local agricultural expert."
+        ];
+        
+        const response = responses[Math.floor(Math.random() * responses.length)];
         const botMsg = {
           type: 'bot' as const,
           content: response
@@ -193,7 +340,7 @@ ${analysis.nutritionAdvice.map(n => `• ${n}`).join('\n')}`;
       } catch (error) {
         const errorMessage = {
           type: 'bot' as const,
-          content: getText('chatError') || 'Sorry, I encountered an error. Please try again.'
+          content: 'Sorry, I encountered an error. Please try again.'
         };
         setChatMessages(prev => [...prev, errorMessage]);
       }
@@ -246,7 +393,7 @@ ${analysis.nutritionAdvice.map(n => `• ${n}`).join('\n')}`;
       </header>
 
       {/* Hero Section */}
-      <section id="home" className="py-20 bg-agriculture-gradient text-primary-foreground relative overflow-hidden">
+      <section id="home" className="py-20 bg-gradient-to-r from-primary via-green-600 to-green-700 text-primary-foreground relative overflow-hidden">
         <div className="absolute inset-0 bg-black/20"></div>
         <div className="container mx-auto px-4 text-center relative z-10">
           <div className="fade-in">
@@ -299,7 +446,7 @@ ${analysis.nutritionAdvice.map(n => `• ${n}`).join('\n')}`;
       </section>
 
       {/* How to Use - Vertical Slider */}
-      <section id="howto" className="py-20 bg-accent">
+      <section id="howto" className="py-20 bg-green-50">
         <div className="container mx-auto px-4">
           <h2 className="text-4xl font-bold text-center text-primary mb-16 fade-in">{getText('howToTitle')}</h2>
           
@@ -360,7 +507,7 @@ ${analysis.nutritionAdvice.map(n => `• ${n}`).join('\n')}`;
       </section>
 
       {/* AI Analysis & Chat */}
-      <section id="analysis" className="py-20 bg-background">
+      <section id="analysis" className="py-20 bg-white">
         <div className="container mx-auto px-4">
           <h2 className="text-4xl font-bold text-center text-primary mb-16 fade-in">{getText('analysisTitle')}</h2>
           
@@ -506,7 +653,7 @@ ${analysis.nutritionAdvice.map(n => `• ${n}`).join('\n')}`;
       </section>
 
       {/* Medicine Vendors Section */}
-      <section id="vendors" className="py-20 bg-accent">
+      <section id="vendors" className="py-20 bg-green-50">
         <div className="container mx-auto px-4">
           <h2 className="text-4xl font-bold text-center text-primary mb-16 fade-in">{getText('vendorsTitle')}</h2>
           
@@ -550,7 +697,7 @@ ${analysis.nutritionAdvice.map(n => `• ${n}`).join('\n')}`;
       </section>
 
       {/* Government Schemes Section */}
-      <section id="schemes" className="py-20 bg-background">
+      <section id="schemes" className="py-20 bg-white">
         <div className="container mx-auto px-4">
           <h2 className="text-4xl font-bold text-center text-primary mb-16 fade-in">{getText('schemesTitle')}</h2>
           
@@ -588,7 +735,7 @@ ${analysis.nutritionAdvice.map(n => `• ${n}`).join('\n')}`;
       </section>
 
       {/* About Section */}
-      <section id="about" className="py-20 bg-accent">
+      <section id="about" className="py-20 bg-green-50">
         <div className="container mx-auto px-4">
           <h2 className="text-4xl font-bold text-center text-primary mb-16 fade-in">{getText('aboutTitle')}</h2>
           
@@ -621,7 +768,7 @@ ${analysis.nutritionAdvice.map(n => `• ${n}`).join('\n')}`;
       </section>
 
       {/* Contact Section */}
-      <section id="contact" className="py-20 bg-background">
+      <section id="contact" className="py-20 bg-white">
         <div className="container mx-auto px-4">
           <h2 className="text-4xl font-bold text-center text-primary mb-16 fade-in">{getText('contactTitle')}</h2>
           
