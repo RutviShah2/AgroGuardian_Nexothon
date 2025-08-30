@@ -80,50 +80,50 @@ const AgroGuardianAI = () => {
 
   // Sample crop analysis data
   const cropAnalysis: CropAnalysis = {
-    farmerName: "Rajesh Kumar",
-    farmLocation: "Nashik, Maharashtra",
-    cropType: "Tomato",
-    diseaseDetected: "Late Blight",
-    severity: "Moderate",
+  farmerName: getText('farmerName'),
+  farmLocation: getText('farmLocation'),
+  cropType: getText('cropType'),
+  diseaseDetected: getText('diseaseDetected'),
+  severity: getText('moderate'),
     confidence: 87.5,
     recommendations: [
-      "Apply copper-based fungicide immediately",
-      "Improve drainage in affected areas",
-      "Remove infected plant debris",
-      "Monitor humidity levels regularly"
+      getText('recommendation1'),
+      getText('recommendation2'),
+      getText('recommendation3'),
+      getText('recommendation4')
     ],
     treatmentMethods: [
-      "Foliar spray with Mancozeb 75% WP",
-      "Soil treatment with Trichoderma",
-      "Organic neem oil application",
-      "Proper field sanitation"
+      getText('treatment1'),
+      getText('treatment2'),
+      getText('treatment3'),
+      getText('treatment4')
     ],
     vendorContacts: [
       {
-        name: "AgriSupply Co.",
+        name: getText('vendor1Name'),
         phone: "+91-9876543210",
         email: "contact@agrisupply.com",
-        products: ["Mancozeb 75% WP", "Copper Oxychloride"]
+        products: getText('vendor1Products').split(', ')
       },
       {
-        name: "FarmCare Solutions",
+        name: getText('vendor2Name'),
         phone: "+91-9123456789",
         email: "sales@farmcare.in",
-        products: ["Trichoderma", "Organic Neem Oil"]
+        products: getText('vendor2Products').split(', ')
       }
     ],
     governmentSchemes: [
       {
-        name: "PM-KISAN Scheme",
-        description: "Direct income support to farmers",
-        eligibility: "Small and marginal farmers",
-        benefit: "₹6,000 per year"
+        name: getText('scheme1Name'),
+        description: getText('scheme1Desc'),
+        eligibility: getText('scheme1Eligibility'),
+        benefit: getText('scheme1Benefit')
       },
       {
-        name: "Pradhan Mantri Fasal Bima Yojana",
-        description: "Crop insurance scheme",
-        eligibility: "All farmers growing notified crops",
-        benefit: "Premium subsidy up to 2%"
+        name: getText('scheme2Name'),
+        description: getText('scheme2Desc'),
+        eligibility: getText('scheme2Eligibility'),
+        benefit: getText('scheme2Benefit')
       }
     ],
     analysisDate: new Date().toLocaleDateString('en-IN'),
@@ -284,22 +284,22 @@ const AgroGuardianAI = () => {
   const steps = [
     {
       title: getText('step1Title'),
-      desc: getText('step1Desc'),
+      desc: getText('step1Detail'),
       icon: '🌍'
     },
     {
       title: getText('step2Title'),
-      desc: getText('step2Desc'),
+      desc: getText('step2Detail'),
       icon: '📱'
     },
     {
       title: getText('step3Title'),
-      desc: getText('step3Desc'),
+      desc: getText('step3Detail'),
       icon: '🤖'
     },
     {
       title: getText('step4Title'),
-      desc: getText('step4Desc'),
+      desc: getText('step4Detail'),
       icon: '💬'
     }
   ];
@@ -816,20 +816,20 @@ const AgroGuardianAI = () => {
               <div className="text-center">
                 <div className="flex items-center justify-center mb-4">
                   <Download className="h-8 w-8 text-blue-600 mr-2" />
-                  <h3 className="text-2xl font-semibold text-gray-800">Download Report</h3>
+                  <h3 className="text-2xl font-semibold text-gray-800">{getText('downloadReport')}</h3>
                 </div>
 
                 {!showOtpForm && !isOtpVerified && (
                   <div>
                     <p className="text-gray-600 mb-6">
-                      Click the button below to download your detailed crop analysis report in PDF format.
+                      {getText('downloadSummary')}
                     </p>
                     <button
                       onClick={() => setShowOtpForm(true)}
                       className="bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold transition-colors duration-200 flex items-center mx-auto"
                     >
                       <Shield className="h-5 w-5 mr-2" />
-                      Request Download
+                      {getText('requestDownload')}
                     </button>
                   </div>
                 )}
@@ -838,20 +838,20 @@ const AgroGuardianAI = () => {
                   <div className="max-w-md mx-auto">
                     <div className="bg-blue-50 p-4 rounded-lg mb-6">
                       <Shield className="h-6 w-6 text-blue-600 mx-auto mb-2" />
-                      <p className="text-blue-800 font-medium">OTP Verification Required</p>
-                      <p className="text-blue-600 text-sm">Enter the OTP to download your report securely</p>
+                      <p className="text-blue-800 font-medium">{getText('downloadOtp')}</p>
+                      <p className="text-blue-600 text-sm">{getText('downloadOtpDesc')}</p>
                     </div>
 
                     <div className="space-y-4">
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Enter OTP
+                          {getText('enterOtp')}
                         </label>
                         <input
                           type="text"
                           value={otpInput}
                           onChange={(e) => setOtpInput(e.target.value)}
-                          placeholder="Enter 6-digit OTP"
+                          placeholder={getText('enterOtpPlaceholder')}
                           className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-center text-lg font-mono"
                           maxLength={6}
                         />
@@ -869,14 +869,14 @@ const AgroGuardianAI = () => {
                           onClick={() => setShowOtpForm(false)}
                           className="flex-1 bg-gray-300 text-gray-700 px-4 py-2 rounded-lg font-medium transition-colors"
                         >
-                          Cancel
+                          {getText('cancel')}
                         </button>
                         <button
                           onClick={handleOtpVerification}
                           disabled={otpInput.length !== 6}
                           className="flex-1 bg-blue-600 disabled:bg-blue-300 text-white px-4 py-2 rounded-lg font-medium transition-colors"
                         >
-                          Verify OTP
+                          {getText('verifyOtp')}
                         </button>
                       </div>
                     </div>
@@ -887,8 +887,8 @@ const AgroGuardianAI = () => {
                   <div className="max-w-md mx-auto">
                     <div className="bg-green-50 p-4 rounded-lg mb-6">
                       <CheckCircle className="h-6 w-6 text-green-600 mx-auto mb-2" />
-                      <p className="text-green-800 font-medium">OTP Verified Successfully!</p>
-                      <p className="text-green-600 text-sm">You can now download your report</p>
+                      <p className="text-green-800 font-medium">{getText('otpVerified')}</p>
+                      <p className="text-green-600 text-sm">{getText('youCanDownload')}</p>
                     </div>
 
                     <button
@@ -899,12 +899,12 @@ const AgroGuardianAI = () => {
                       {isGenerating ? (
                         <>
                           <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
-                          Generating PDF...
+                          {getText('generatingPDF')}
                         </>
                       ) : (
                         <>
                           <Download className="h-5 w-5 mr-2" />
-                          Download PDF Report
+                          {getText('downloadPDFReport')}
                         </>
                       )}
                     </button>
@@ -936,13 +936,13 @@ const AgroGuardianAI = () => {
           <h2 className="text-4xl font-bold text-center text-primary mb-16 fade-in">{getText('vendorsTitle')}</h2>
           
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
-            {[ 
-              { name: "AgroLife Sciences", medicine: "Fungicides & Pesticides", rating: 4.8, contact: "+91-9876543210", location: "Mumbai, Maharashtra" },
-              { name: "Bayer CropScience", medicine: "Crop Protection Solutions", rating: 4.9, contact: "+91-9876543211", location: "Hyderabad, Telangana" },
-              { name: "UPL Limited", medicine: "Herbicides & Insecticides", rating: 4.7, contact: "+91-9876543212", location: "Gujarat, India" },
-              { name: "Rallis India", medicine: "Organic Fertilizers", rating: 4.6, contact: "+91-9876543213", location: "Bangalore, Karnataka" },
-              { name: "Coromandel International", medicine: "Nutrition & Protection", rating: 4.8, contact: "+91-9876543214", location: "Secunderabad, Telangana" },
-              { name: "Dhanuka Agritech", medicine: "Specialty Chemicals", rating: 4.5, contact: "+91-9876543215", location: "New Delhi, India" }
+            {[
+              { name: getText('vendorCard1'), medicine: getText('vendorCard1Med'), rating: 4.8, contact: "+91-9876543210", location: getText('vendorCard1Loc') },
+              { name: getText('vendorCard2'), medicine: getText('vendorCard2Med'), rating: 4.9, contact: "+91-9876543211", location: getText('vendorCard2Loc') },
+              { name: getText('vendorCard3'), medicine: getText('vendorCard3Med'), rating: 4.7, contact: "+91-9876543212", location: getText('vendorCard3Loc') },
+              { name: getText('vendorCard4'), medicine: getText('vendorCard4Med'), rating: 4.6, contact: "+91-9876543213", location: getText('vendorCard4Loc') },
+              { name: getText('vendorCard5'), medicine: getText('vendorCard5Med'), rating: 4.8, contact: "+91-9876543214", location: getText('vendorCard5Loc') },
+              { name: getText('vendorCard6'), medicine: getText('vendorCard6Med'), rating: 4.5, contact: "+91-9876543215", location: getText('vendorCard6Loc') }
             ].map((vendor, idx) => (
               <div
                 key={idx}
@@ -969,7 +969,7 @@ const AgroGuardianAI = () => {
                   {vendor.contact}
                 </p>
                 <button className="w-full bg-primary text-primary-foreground py-2 px-4 rounded-lg transition-colors font-medium">
-                  Contact Vendor
+                  {getText('vendorContactBtn')}
                 </button>
               </div>
             ))}
@@ -983,13 +983,13 @@ const AgroGuardianAI = () => {
           <h2 className="text-4xl font-bold text-center text-primary mb-16 fade-in">{getText('schemesTitle')}</h2>
           
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
-            {[ 
-              { name: "PM-KISAN Scheme", desc: "Rs 6,000 annual income support for farmers", link: "https://pmkisan.gov.in/" },
-              { name: "Crop Insurance Scheme", desc: "Protection against crop losses due to natural disasters", link: "https://pmfby.gov.in/" },
-              { name: "Kisan Credit Card", desc: "Agricultural loan facility at subsidized rates", link: "https://www.nabard.org/content1.aspx?id=570" },
-              { name: "Soil Health Card", desc: "Free soil quality testing and recommendations", link: "https://soilhealth.dac.gov.in/" },
-              { name: "e-NAM Online Market", desc: "Digital platform to sell crops at better prices", link: "https://enam.gov.in/" },
-              { name: "Gujarat Agriculture Portal", desc: "State specific agricultural schemes and benefits", link: "https://agri.gujarat.gov.in/" }
+            {[
+              { name: getText('schemeCard1'), desc: getText('schemeCard1Desc'), link: "https://pmkisan.gov.in/" },
+              { name: getText('schemeCard2'), desc: getText('schemeCard2Desc'), link: "https://pmfby.gov.in/" },
+              { name: getText('schemeCard3'), desc: getText('schemeCard3Desc'), link: "https://www.nabard.org/content1.aspx?id=570" },
+              { name: getText('schemeCard4'), desc: getText('schemeCard4Desc'), link: "https://soilhealth.dac.gov.in/" },
+              { name: getText('schemeCard5'), desc: getText('schemeCard5Desc'), link: "https://enam.gov.in/" },
+              { name: getText('schemeCard6'), desc: getText('schemeCard6Desc'), link: "https://agri.gujarat.gov.in/" }
             ].map((scheme, idx) => (
               <div
                 key={idx}
@@ -1009,7 +1009,7 @@ const AgroGuardianAI = () => {
                   rel="noopener noreferrer"
                   className="bg-primary text-primary-foreground px-4 py-2 rounded-lg transition-colors text-sm font-medium inline-flex items-center space-x-2"
                 >
-                  <span>Learn More</span>
+                  <span>{getText('learnMoreBtn')}</span>
                   <ChevronRight className="h-4 w-4" />
                 </a>
               </div>
@@ -1028,24 +1028,24 @@ const AgroGuardianAI = () => {
               <div className="bg-primary/10 p-6 rounded-full w-24 h-24 mx-auto mb-6 flex items-center justify-center">
                 <Leaf className="h-12 w-12 text-primary float-animation" />
               </div>
-              <h3 className="text-2xl font-bold text-primary mb-4">AI-Powered Analysis</h3>
-              <p className="text-muted-foreground leading-relaxed">Precise crop disease identification through advanced machine learning technology and computer vision algorithms.</p>
+              <h3 className="text-2xl font-bold text-primary mb-4">{getText('aboutDesc1')}</h3>
+              <p className="text-muted-foreground leading-relaxed">{getText('aboutDesc1Detail')}</p>
             </div>
             
             <div className="text-center">
               <div className="bg-primary/10 p-6 rounded-full w-24 h-24 mx-auto mb-6 flex items-center justify-center">
                 <Users className="h-12 w-12 text-primary float-animation" style={{ animationDelay: '1s' }} />
               </div>
-              <h3 className="text-2xl font-bold text-primary mb-4">Farmer-Centric Design</h3>
-              <p className="text-muted-foreground leading-relaxed">Simplified interface designed specifically for farmers with multilingual support and intuitive navigation.</p>
+              <h3 className="text-2xl font-bold text-primary mb-4">{getText('aboutDesc2')}</h3>
+              <p className="text-muted-foreground leading-relaxed">{getText('aboutDesc2Detail')}</p>
             </div>
             
             <div className="text-center">
               <div className="bg-primary/10 p-6 rounded-full w-24 h-24 mx-auto mb-6 flex items-center justify-center">
                 <MessageCircle className="h-12 w-12 text-primary float-animation" style={{ animationDelay: '2s' }} />
               </div>
-              <h3 className="text-2xl font-bold text-primary mb-4">24/7 AI Support</h3>
-              <p className="text-muted-foreground leading-relaxed">Get instant agricultural advice and support anytime, anywhere you need it with our intelligent chatbot.</p>
+              <h3 className="text-2xl font-bold text-primary mb-4">{getText('aboutDesc3')}</h3>
+              <p className="text-muted-foreground leading-relaxed">{getText('aboutDesc3Detail')}</p>
             </div>
           </div>
         </div>
@@ -1061,27 +1061,27 @@ const AgroGuardianAI = () => {
               <div className="bg-primary/10 p-4 rounded-full w-16 h-16 mx-auto mb-6 flex items-center justify-center">
                 <Phone className="h-8 w-8 text-primary" />
               </div>
-              <h3 className="font-bold text-card-foreground mb-3 text-xl">Helpline</h3>
+              <h3 className="font-bold text-card-foreground mb-3 text-xl">{getText('contactHelpline')}</h3>
               <p className="text-muted-foreground text-lg mb-2">1800-180-1551</p>
-              <p className="text-sm text-muted-foreground">Available 24/7</p>
+              <p className="text-sm text-muted-foreground">{getText('contactAvailable')}</p>
             </div>
             
             <div className="text-center p-8 bg-card rounded-2xl shadow-lg border border-border">
               <div className="bg-primary/10 p-4 rounded-full w-16 h-16 mx-auto mb-6 flex items-center justify-center">
                 <Mail className="h-8 w-8 text-primary" />
               </div>
-              <h3 className="font-bold text-card-foreground mb-3 text-xl">Email Support</h3>
+              <h3 className="font-bold text-card-foreground mb-3 text-xl">{getText('contactEmail')}</h3>
               <p className="text-muted-foreground text-lg mb-2">support@agroguardian.ai</p>
-              <p className="text-sm text-muted-foreground">Response within 24hrs</p>
+              <p className="text-sm text-muted-foreground">{getText('contactResponse')}</p>
             </div>
             
             <div className="text-center p-8 bg-card rounded-2xl shadow-lg border border-border">
               <div className="bg-primary/10 p-4 rounded-full w-16 h-16 mx-auto mb-6 flex items-center justify-center">
                 <MapPin className="h-8 w-8 text-primary" />
               </div>
-              <h3 className="font-bold text-card-foreground mb-3 text-xl">Location</h3>
-              <p className="text-muted-foreground text-lg mb-2">Vadodara, Gujarat</p>
-              <p className="text-sm text-muted-foreground">India</p>
+              <h3 className="font-bold text-card-foreground mb-3 text-xl">{getText('contactLocation')}</h3>
+              <p className="text-muted-foreground text-lg mb-2">{getText('contactPlace')}</p>
+              <p className="text-sm text-muted-foreground">{getText('contactCountry')}</p>
             </div>
           </div>
         </div>
