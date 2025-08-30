@@ -22,8 +22,38 @@ import {
   Sun,
   Cloud,
   Droplets,
-  Sprout
+  Sprout,
+  Download,
+  FileText,
+  CheckCircle,
+  AlertCircle,
+  Calendar
 } from 'lucide-react';
+
+interface CropAnalysis {
+  farmerName: string;
+  farmLocation: string;
+  cropType: string;
+  diseaseDetected: string;
+  severity: string;
+  confidence: number;
+  recommendations: string[];
+  treatmentMethods: string[];
+  vendorContacts: {
+    name: string;
+    phone: string;
+    email: string;
+    products: string[];
+  }[];
+  governmentSchemes: {
+    name: string;
+    description: string;
+    eligibility: string;
+    benefit: string;
+  }[];
+  analysisDate: string;
+  imageUrl?: string;
+}
 
 
 const AgroGuardianAI = () => {
@@ -34,6 +64,11 @@ const AgroGuardianAI = () => {
   const [userMessage, setUserMessage] = useState('');
   const [isCameraActive, setIsCameraActive] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
+  const [otpInput, setOtpInput] = useState('');
+  const [isOtpVerified, setIsOtpVerified] = useState(false);
+  const [showOtpForm, setShowOtpForm] = useState(false);
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [downloadError, setDownloadError] = useState('');
   const fileInputRef = useRef<HTMLInputElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
