@@ -566,27 +566,8 @@ const AgroGuardianAI = () => {
           <div className="max-w-6xl mx-auto">
             <div className="flex flex-col md:flex-row justify-between items-stretch gap-8">
               {(() => {
-                // More detailed descriptions for each step
-                const detailedSteps = [
-                  {
-                    ...steps[0],
-                    desc: 'Step 1: Take a clear photo of your crop using your phone or upload an existing image from your gallery. Ensure the affected area is visible for accurate analysis.'
-                  },
-                  {
-                    ...steps[1],
-                    desc: 'Step 2: Our advanced AI system will automatically analyze the uploaded image to detect any signs of disease, pest, or nutrient deficiency.'
-                  },
-                  {
-                    ...steps[2],
-                    desc: 'Step 3: Instantly receive a detailed report with the diagnosis, severity, and confidence level, along with actionable recommendations tailored to your crop.'
-                  },
-                  {
-                    ...steps[3],
-                    desc: 'Step 4: Follow the provided recommendations and treatment methods to protect and improve your crop health. You can also connect with vendors or access government schemes.'
-                  },
-                ];
                 const [activeStep, setActiveStep] = React.useState(-1);
-                return detailedSteps.map((step, idx) => (
+                return steps.map((step, idx) => (
                   <div
                     key={idx}
                     className={`flex-1 bg-white rounded-3xl shadow-2xl p-8 flex flex-col items-center text-center cursor-pointer transition-all relative group ${activeStep === idx ? 'ring-4 ring-primary scale-105 z-10' : ''}`}
