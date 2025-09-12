@@ -1,16 +1,4 @@
 
-<div align="center">
-	<img src="public/favicon.ico" alt="AgroGuardian AI Logo" width="80" />
-  
-	<h1>🌱 <b>AgroGuardian AI</b> 🌾</h1>
-	<p><i>Empowering farmers with AI-driven crop disease detection and agricultural support.</i></p>
-  
-	<a href="https://lovable.dev/projects/3e22623f-b552-47ad-b820-c1243d67d997"><img src="https://img.shields.io/badge/Live%20Demo-Online-brightgreen?style=flat-square&logo=vercel" alt="Live Demo"></a>
-	<img src="https://img.shields.io/badge/React-2025-blue?logo=react&style=flat-square" alt="React">
-	<img src="https://img.shields.io/badge/TailwindCSS-2025-38bdf8?logo=tailwindcss&style=flat-square" alt="Tailwind CSS">
-	<img src="https://img.shields.io/badge/TypeScript-2025-3178c6?logo=typescript&style=flat-square" alt="TypeScript">
-</div>
-
 ---
 
 ## 🚀 Features
